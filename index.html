@@ -82,29 +82,70 @@
         const ctx = canvas.getContext("2d");
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        let prices = Array.from({ length: canvas.width }, () => Math.random() * canvas.height);
         const fishPriceElement = document.getElementById("fish-price");
-        
+
+        // Hardcoded size for the prices array
+        const pricesArraySize = 100;
+        let prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
+        let currentX = 0;
+        let isPaused = false; // Flag to control pausing the graph
+
+        // Calculate the horizontal scaling factor
+        const xScale = canvas.width / (pricesArraySize - 1);
+
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = "lime";
-            ctx.beginPath();
-            ctx.moveTo(0, prices[0]);
-            for (let i = 1; i < prices.length; i++) {
-                ctx.lineTo(i, prices[i]);
+            for (let i = 1; i < currentX; i++) { 
+                // Scale the x-coordinates to fit the canvas width
+                let x1 = (i - 1) * xScale;
+                let x2 = i * xScale;
+                let y1 = canvas.height - (prices[i - 1] / 10) * canvas.height;
+                let y2 = canvas.height - (prices[i] / 10) * canvas.height;
+                ctx.strokeStyle = prices[i] < prices[i - 1] ? "red" : "green";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
             }
+        }
+
+        function drawCurrentPriceLine() {
+            // Scale the currentX position to fit the canvas width
+            let scaledX = currentX * xScale;
+            ctx.strokeStyle = "red";
+            ctx.beginPath();
+            ctx.moveTo(scaledX, 0);
+            ctx.lineTo(scaledX, canvas.height);
             ctx.stroke();
         }
-        
+
         function updateGraph() {
-            prices.shift();
-            let newPrice = Math.random() * canvas.height;
-            prices.push(newPrice);
+            if (isPaused) return; // Stop updating if paused
+
+            if (currentX < pricesArraySize) {
+                currentX += 1; // Move one step at a time
+            } else {
+                currentX = 0; // Reset to the start
+                prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1); // Regenerate prices
+            }
+
+            // Check if currentX reaches 25% or 75% of the array size
+            if (currentX === 25 || currentX === 75) {
+                isPaused = true; // Pause the graph
+                alert("Paused at " + currentX + " points"); // Show the text box
+                isPaused = false; // Resume after the text box is closed
+            }
+
             drawGraph();
-            fishPriceElement.textContent = `Fish Price: $${(newPrice / canvas.height * 100).toFixed(2)}`;
+            drawCurrentPriceLine();
+            let currentPrice = prices[Math.floor(currentX)];
+            fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
         }
-        
-        setInterval(updateGraph, 500);
+
+        drawGraph();
+        drawCurrentPriceLine();
+        setInterval(updateGraph, 400); // Update every 100ms for smoother animation
     </script>
 </body>
 </html>
