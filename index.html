@@ -48,6 +48,21 @@
             font-size: 20px;
             color: white;
         }
+
+        #quantityText {
+            position: absolute;
+            top: 70px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+        #numberDisplay {
+            position: absolute;
+            top: 70px;
+            left: 150px;
+            font-size: 20px;
+            color: white;
+        }
         #options {
             position: absolute;
             top: 10px;
@@ -55,6 +70,16 @@
             font-size: 20px;
             color: white;
             cursor: pointer;
+        }
+        #boatClick {
+            position: absolute;
+            bottom: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            background: brown;
+            border-radius: 10px;
         }
         #stock-graph {
             position: absolute;
@@ -65,15 +90,57 @@
             height: 20%;
             background: black;
         }
+        #incrementButton{
+            position: absolute;
+            bottom: 35%;
+            left: 45%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            background: brown;
+            border-radius: 10px;
+            z-index: 1;
+            animation: sway 2s infinite ease-in-out;
+        }
+        #bottleButton {
+            position:absolute;
+            top:50%;
+            transform: translateY(-50%);
+            background: url('bottle.png') no-repeat center center;
+            background-size: contain;
+            width: 100px;
+            height: 100px;
+            border: none;
+            display: none;
+            animation: move-across 5s linear infinite;
+        }
+        @keyframes move-across {
+            0% { left: 100%; }
+            100% { left: -10%; }
+        }
+
+        @keyframes sway {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25%{
+                transform: translateX(-3px);
+            }
+            75%{
+                transform: translateX(3px);
+            }
+        }
     </style>
 </head>
 <body>
     <div id="game-container">
+        <span id="quantityText">Quantity: 0</span>
+        <button id="incrementButton">+</button>
         <div id="money">$1000</div>
         <div id="fish-price">Fish Price: $10</div>
         <div id="options">⚙️</div>
         <div id="ocean"></div>
-        <div id="boat"></div>
+        <button id="bottleButton" class="bottleButton"></button>
         <canvas id="stock-graph"></canvas>
     </div>
 
@@ -82,6 +149,11 @@
         const ctx = canvas.getContext("2d");
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
+
+        let prices = Array.from({ length: canvas.width }, () => Math.random() * canvas.height);
+        const fishPriceElement = document.getElementById("fish-price");
+        
+
         const fishPriceElement = document.getElementById("fish-price");
 
         // Hardcoded size for the prices array
@@ -92,6 +164,7 @@
 
         // Calculate the horizontal scaling factor
         const xScale = canvas.width / (pricesArraySize - 1);
+
 
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -121,6 +194,16 @@
         }
 
         function updateGraph() {
+
+            prices.shift();
+            let newPrice = Math.random() * canvas.height;
+            prices.push(newPrice);
+            drawGraph();
+            fishPriceElement.textContent = `Fish Price: $${(newPrice / canvas.height * 100).toFixed(2)}`;
+        }
+        
+        setInterval(updateGraph, 500);
+
             if (isPaused) return; // Stop updating if paused
 
             if (currentX < pricesArraySize) {
@@ -147,5 +230,6 @@
         drawCurrentPriceLine();
         setInterval(updateGraph, 400); // Update every 100ms for smoother animation
     </script>
+    <script src="boatclicker.js"></script>
 </body>
 </html>
