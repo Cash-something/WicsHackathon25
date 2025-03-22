@@ -3,10 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Boat Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, skyblue, deepskyblue);
+            position: relative;
+        }
+        #ocean {
+            position: absolute;
+            bottom: 30%;
+            width: 100%;
+            height: 20%;
+            background: blue;
+        }
+        #boat {
+            position: absolute;
+            bottom: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            background: brown;
+            border-radius: 10px;
+        }
+        #money {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+        #options {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+        #stock-graph {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 20%;
+            background: black;
+        }
+    </style>
 </head>
 <body>
-    
+    <div id="game-container">
+        <div id="money">$1000</div>
+        <div id="options">⚙️</div>
+        <div id="ocean"></div>
+        <div id="boat"></div>
+        <canvas id="stock-graph"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("stock-graph");
+        const ctx = canvas.getContext("2d");
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        let prices = Array.from({ length: canvas.width }, () => Math.random() * canvas.height);
+        
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "lime";
+            ctx.beginPath();
+            ctx.moveTo(0, prices[0]);
+            for (let i = 1; i < prices.length; i++) {
+                ctx.lineTo(i, prices[i]);
+            }
+            ctx.stroke();
+        }
+        
+        function updateGraph() {
+            prices.shift();
+            prices.push(Math.random() * canvas.height);
+            drawGraph();
+        }
+        
+        setInterval(updateGraph, 100);
+    </script>
 </body>
 </html>
