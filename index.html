@@ -48,7 +48,6 @@
             font-size: 20px;
             color: white;
         }
-
         #quantityText {
             position: absolute;
             top: 70px;
@@ -146,12 +145,6 @@
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
-        let prices = Array.from({ length: canvas.width }, () => Math.random() * canvas.height);
-        const fishPriceElement = document.getElementById("fish-price");
-        
-
-        const fishPriceElement = document.getElementById("fish-price");
-
         // Hardcoded size for the prices array
         const pricesArraySize = 100;
         let prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
@@ -160,7 +153,6 @@
 
         // Calculate the horizontal scaling factor
         const xScale = canvas.width / (pricesArraySize - 1);
-
 
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -190,17 +182,11 @@
         }
 
         function updateGraph() {
+            if (isPaused) return; // Stop updating if paused
 
             prices.shift();
-            let newPrice = Math.random() * canvas.height;
+            let newPrice = Math.random() * 9 + 1;
             prices.push(newPrice);
-            drawGraph();
-            fishPriceElement.textContent = `Fish Price: $${(newPrice / canvas.height * 100).toFixed(2)}`;
-        }
-        
-        setInterval(updateGraph, 500);
-
-            if (isPaused) return; // Stop updating if paused
 
             if (currentX < pricesArraySize) {
                 currentX += 1; // Move one step at a time
@@ -224,7 +210,7 @@
 
         drawGraph();
         drawCurrentPriceLine();
-        setInterval(updateGraph, 400); // Update every 100ms for smoother animation
+        setInterval(updateGraph, 400); // Update every 400ms for smoother animation
     </script>
     <script src="boatclicker.js"></script>
 </body>
