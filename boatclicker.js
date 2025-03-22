@@ -1,5 +1,5 @@
 let quantity = 0;
-const employee = 2;
+let fishers = 1;
 
 const quantityText = document.getElementById("quantityText");
 const incrementButton = document.getElementById("incrementButton");
@@ -59,7 +59,7 @@ function updateQuantity(amount) {
 
 // QUANTITY INCREASE ON CLICK
 incrementButton.addEventListener("click", () => {
-    updateQuantity(employee);
+    updateQuantity(fishers);
 });
 
 // QUANTITY INCREASE EVERY SECOND
