@@ -41,6 +41,13 @@
             font-size: 20px;
             color: white;
         }
+        #fish-price {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
         #options {
             position: absolute;
             top: 10px;
@@ -63,6 +70,7 @@
 <body>
     <div id="game-container">
         <div id="money">$1000</div>
+        <div id="fish-price">Fish Price: $10</div>
         <div id="options">⚙️</div>
         <div id="ocean"></div>
         <div id="boat"></div>
@@ -75,6 +83,7 @@
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         let prices = Array.from({ length: canvas.width }, () => Math.random() * canvas.height);
+        const fishPriceElement = document.getElementById("fish-price");
         
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -89,11 +98,13 @@
         
         function updateGraph() {
             prices.shift();
-            prices.push(Math.random() * canvas.height);
+            let newPrice = Math.random() * canvas.height;
+            prices.push(newPrice);
             drawGraph();
+            fishPriceElement.textContent = `Fish Price: $${(newPrice / canvas.height * 100).toFixed(2)}`;
         }
         
-        setInterval(updateGraph, 100);
+        setInterval(updateGraph, 500);
     </script>
 </body>
 </html>
