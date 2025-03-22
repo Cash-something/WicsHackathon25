@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply and Demand Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        canvas {
+            height: 300px !important;
+            width: 500px !important;
+            margin: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h2>Supply and Demand Chart</h2>
+    <canvas id="supplyDemandChart"></canvas>
+
+    <script>
+        const ctx = document.getElementById('supplyDemandChart').getContext('2d');
+
+        const quantity = [40, 80, 120, 160, 200, 240, 280, 320, 360, 400];
+        const demand = quantity.map(q => 400 - q); // Downward slope
+        const supply = quantity.map(q => q);
+        const fixed = Math.random()*400;
+        const bprice = quantity.map(q => fixed);  
+        
+        console.log(bprice);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: quantity,
+                datasets: [
+                {
+                        label: 'Black Price',
+                        data: bprice,
+                        borderColor: 'black',
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Demand',
+                        data: demand,
+                        borderColor: 'red',
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Supply',
+                        data: supply,
+                        borderColor: 'blue',
+                        fill: false,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Quantity'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Price'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
