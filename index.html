@@ -172,9 +172,10 @@
         <div id="ocean-choice-popup">
             <p>Choose an ocean:</p>
             <div class="ocean-option" id="ocean-option-1">
-                <p>Price per fish: $3</p>
+                <p>Stay in Current Ocean</p>
+                <p>Price per fish: <span id="adjusted-price-range">$3 - $6</span></p>
                 <p>Fish gain rate: 1 fish/sec</p>
-                <p>Cost to go: $500</p>
+                <p>Cost to go: Free</p>
             </div>
             <div class="ocean-option" id="ocean-option-2">
                 <p>Price per fish: $5</p>
@@ -213,6 +214,7 @@
 
         let currentX = 0;
         let isPaused = false;
+        let priceAdjustment = 1; // Initialize price adjustment factor
 
         // DOM elements
         const fishPriceElement = document.getElementById("fish-price");
@@ -223,10 +225,11 @@
         const sellButton = document.getElementById("sell-button");
         const incrementButton = document.getElementById("incrementButton");
         const oceanChoicePopup = document.getElementById("ocean-choice-popup");
+        const adjustedPriceRange = document.getElementById("adjusted-price-range");
 
         // Ocean options data
         const oceans = [
-            { pricePerFish: 3, fishGainRate: 1, cost: 500 },
+            { pricePerFish: 3, fishGainRate: 1, cost: 0 }, // Stay in current ocean (free)
             { pricePerFish: 5, fishGainRate: 2, cost: 1000 },
             { pricePerFish: 7, fishGainRate: 3, cost: 1500 }
         ];
@@ -279,9 +282,12 @@
                 currentX += 1;
             } else {
                 // End of the graph reached
-                const priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // Update price adjustment
                 const adjustedPriceMin = priceLowerBound * priceAdjustment;
                 const adjustedPriceMax = priceUpperBound * priceAdjustment;
+
+                // Update the adjusted price range in the ocean choice popup
+                adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - $${adjustedPriceMax.toFixed(2)}`;
 
                 // Show the ocean choice popup
                 oceanChoicePopup.style.display = "block";
@@ -316,7 +322,7 @@
                 totalFishSold += fishToSell; // Update total fish sold
 
                 // Update prices after currentX
-                const priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
                 for (let i = currentX; i < pricesArraySize; i++) {
                     prices[i] = priceAdjustment * prices[i]; // Scale to fit the graph
                 }
@@ -347,11 +353,22 @@
             option.addEventListener("click", () => {
                 const selectedOcean = oceans[index];
                 if (money >= selectedOcean.cost) {
-                    money -= selectedOcean.cost;
+                    if (index !== 0) {
+                        // Deduct cost only if not staying in the current ocean
+                        money -= selectedOcean.cost;
+                    }
                     priceLowerBound = selectedOcean.pricePerFish;
                     priceUpperBound = selectedOcean.pricePerFish + 3; // Adjust upper bound
                     fishPopulation = 250; // Reset fish population
                     totalFishSold = 0; // Reset total fish sold
+
+                    // Apply price adjustment if staying in the current ocean
+                    if (index === 0) {
+                        for (let i = 0; i < pricesArraySize; i++) {
+                            prices[i] = priceAdjustment * (Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound);
+                        }
+                    }
+
                     updateMoneyDisplay();
                     oceanChoicePopup.style.display = "none";
                     isPaused = false;
