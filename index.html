@@ -536,12 +536,17 @@
                         //pay the piper if ur movin
                         if (index == 1) {
                         document.getElementById("background").src = 'Med.png'; 
+                        currentOcean = "med";
                         
                         }
                         if (index == 2) {
-                            document.getElementById("background").src = 'Arctic.png'; 
+                            document.getElementById("background").src = 'Arctic.png';
+                            currentOcean = "arctic";
                         }
                         money -= selectedOcean.cost;
+                    }
+                    else {
+                        currentOcean = "gulf";
                     }
                     priceAdjustment = 1;
                     priceLowerBound = selectedOcean.pricePerFish;
