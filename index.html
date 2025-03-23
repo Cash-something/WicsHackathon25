@@ -305,7 +305,6 @@
 
             <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>
 
-            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>    
           
 
             <button id="sell-button">Complete</button>
@@ -597,25 +596,26 @@
             let boatFee = boatlvl * 100;
             let employeeFee = employees * 30;
 
+            // Deduct fees even if no fish are sold
+            money -= boatFee;
+            money -= employeeFee;
+
             if (fishToSell > 0 && fishToSell <= fishQuantity) {
                 const currentPrice = prices[Math.floor(currentX)];
                 money += fishToSell * currentPrice; // Add money from selling fish
                 fishQuantity -= fishToSell; // Deduct sold fish from quantity
-
-                money -= boatFee; // Deduct boat fee
-                money -= employeeFee; // Deduct employee fee
-
-                updateMoneyDisplay(); // Update money display
-                updateQuantityDisplay(); // Update fish quantity display
 
                 totalFishSold += fishToSell; // Update total fish sold
 
                 // Update prices after currentX
                 priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
                 for (let i = currentX; i < pricesArraySize; i++) {
-                    prices[i] = priceAdjustment * prices[i]; // Scale prices based on fish population
+                    prices[i] = priceAdjustment * prices[i];
                 }
             }
+
+            updateMoneyDisplay(); // Update money display
+            updateQuantityDisplay(); // Update fish quantity display
 
             sellFishPopup.style.display = "none"; // Hide the popup
             isPaused = false; // Resume the graph
