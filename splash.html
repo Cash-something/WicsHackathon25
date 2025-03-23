@@ -13,28 +13,38 @@
             font-family: Arial, sans-serif;
             height: 100%;
             overflow: hidden;
-            /* Prevent scrolling */
         }
 
         #splash-container {
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(to bottom, brown, burlywood);
+            background-image: url('Start_Screen.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
+            image-rendering: -webkit-optimize-contrast;
         }
 
         #title {
+            background-image: url('Title.png');
+            background-repeat: no-repeat;
+            background-size: contain;
             text-align: center;
             font-size: 48px;
-            color: white;
+            color: rgba(0, 0, 0, 0);
             margin-bottom: 40px;
             opacity: 1;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
             transition: opacity 0.5s ease, transform 0.5s ease;
+            image-rendering: -webkit-optimize-contrast;
+            width: 300px;
         }
 
         .button {
@@ -49,7 +59,9 @@
             text-align: center;
             transition: background-color 0.3s, transform 0.2s, opacity 0.5s ease;
             opacity: 1;
-            position: relative;
+            position: absolute;
+            top: 155px;
+            left: 20px;
         }
 
         .button:hover {
@@ -64,81 +76,90 @@
         .hidden {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.9);
         }
 
         #character-selection {
             width: 400px;
             height: 500px;
-            background-color: white;
+            background-image: url('Select.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 650px 450px;
             border: 5px solid black;
             border-radius: 20px;
             display: none;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 2px 125px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            image-rendering: -webkit-optimize-contrast;
         }
 
         #name-prompt {
             font-size: 24px;
-            /* Larger text */
             font-weight: bold;
             margin: 0;
-            /* Removed all margins */
             padding: 0;
-            /* Removed all paddings */
         }
 
         #name-input {
-            width: 80%;
-            padding: 10px;
+            width: 25%;
+            padding: 5px 2px;
             font-size: 18px;
             border: 2px solid gray;
             border-radius: 5px;
             text-align: center;
             margin: 10px 0 0 0;
-            /* Minimal margin on top */
+            position: absolute;
+            bottom: 190px;
+            right: 35px;
         }
 
         .character-button {
             width: 50px;
             height: 50px;
-            background-color: lightgray;
-            border: 2px solid darkgray;
+            background-color: rgba(0, 0, 0, 0);
+            border: 2px rgba(0, 0, 0, 0);
             border-radius: 10px;
             font-size: 24px;
             text-align: center;
             cursor: pointer;
+            position: absolute;
+            top: 235px;
         }
 
         .character-button:hover {
             background-color: gray;
         }
 
+        .character-button.right {
+            left: 350px;
+            /* Right-facing button */
+        }
+
+        .character-button.left {
+            left: 100px;
+            /* Left-facing button */
+        }
+
         .character-display {
-            width: 100px;
-            height: 100px;
-            background-color: burlywood;
+            width: 115px;
+            height: 205px;
+            background-color: rgb(204, 170, 124);
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 20px 0;
             border: 2px solid black;
             border-radius: 10px;
-        }
-
-        .red-button {
-            background-color: red;
-        }
-
-        .red-button:hover {
-            background-color: darkred;
+            position: absolute;
+            left: 145px;
+            top: 140px;
         }
 
         .controls-container {
@@ -148,8 +169,33 @@
             gap: 20px;
         }
 
-        #next-button {
-            margin-top: 20px;
+        .red-button {
+            position: absolute;
+            top: 75%;
+            left: 70%;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            background-color: red;
+            border: 5px solid white;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #hyper {
+            transition: background-color 0.3s, transform 0.2s, opacity 0.5s ease;
+            opacity: 1;
+            width: 100px;
+            height: 50px;
+        }
+
+        #next-button:hover {
+            background-color: darkgray;
+            transform: scale(1.05);
+        }
+
+        #next-button:active {
+            background-color: lightgray;
         }
     </style>
 </head>
@@ -159,6 +205,7 @@
         <source src="splashMusic.wav" type="audio/wav">
     </audio>
     <div id="splash-container">
+
         <h1 id="title">Game Name Placeholder</h1>
         <a id="startButton" class="button">Start</a>
         <button id="playMusicButton">Play Music</button>
@@ -170,11 +217,15 @@
         <div id="name-prompt">Enter a Name For Your Business</div>
         <input id="name-input" type="text" placeholder="Enter Your Name" />
         <div class="controls-container">
-            <button class="character-button">←</button>
-            <div class="character-display">[PNG]</div>
-            <button class="character-button">→</button>
+            <button class="character-button left">←</button> <!-- Left-facing button -->
+            <div class="character-display">
+                <img id="character-image" src="Captain_front.png" alt="Character" />
+            </div>
+            <button class="character-button right">→</button> <!-- Right-facing button -->
         </div>
-        <a id="next-button" class="button red-button" href="index.html">Next</a>
+        <div id="next-button" class="button red-button">
+            <a id="hyper" href="index.html">Next</a>
+        </div>
     </div>
 
     <script>
@@ -192,15 +243,39 @@
         const title = document.getElementById("title");
         const splashContainer = document.getElementById("splash-container");
         const characterSelection = document.getElementById("character-selection");
+        const leftButton = document.querySelector(".character-button.left");
+        const rightButton = document.querySelector(".character-button.right");
+        const characterImage = document.getElementById("character-image");
+
+        // Array of images
+        const characterImages = [
+            "Captain_front.png", // Replace with actual image URLs
+            "Employee_1 front.png",
+            "Employee_2 front.png",
+            "Employee_3 front.png",
+            "Employee_4 front.png"
+        ];
+
+        let currentImageIndex = 0;
+
+        leftButton.addEventListener("click", () => {
+            currentImageIndex = (currentImageIndex - 1 + characterImages.length) % characterImages.length;
+            characterImage.src = characterImages[currentImageIndex];
+        });
+
+        rightButton.addEventListener("click", () => {
+            currentImageIndex = (currentImageIndex + 1) % characterImages.length;
+            characterImage.src = characterImages[currentImageIndex];
+        });
 
         startButton.addEventListener("click", () => {
             title.style.opacity = "0";
             startButton.style.opacity = "0";
 
-            setTimeout(() => {
-                title.style.display = "none";
-                startButton.style.display = "none";
+            splashContainer.classList.add("hidden");
 
+            setTimeout(() => {
+                splashContainer.style.display = "none";
                 characterSelection.style.display = "flex";
             }, 500);
         });
