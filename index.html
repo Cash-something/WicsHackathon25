@@ -363,6 +363,7 @@
         let fishPopulation = 250; // Initialize fish population
         let totalFishSold = 0; // Total fish sold
         const pricesArraySize = 100;
+        const oceanLevel = 1;
 
         // Global variables for price bounds
         let priceLowerBound = 3; // Lower bound for prices
@@ -392,9 +393,10 @@
 
         // Ocean options data
         const oceans = [
-            { pricePerFish: 3, fishGainRate: 1, cost: 0 }, // Stay in current ocean (free)
-            { pricePerFish: 5, fishGainRate: 2, cost: 1000 },
-            { pricePerFish: 7, fishGainRate: 3, cost: 1500 }
+            { pricePerFish: 3, fishGainRate: 1, cost: 0, oceanLevel: 1 }, // Stay in current ocean (free)
+            { pricePerFish: 5, fishGainRate: 2, cost: 1000, oceanLevel: 2 },
+            { pricePerFish: 7, fishGainRate: 3, cost: 1500, oceanLevel: 3 },
+            { pricePerFish: 1, fishGainRate: 1, cost: 1, oceanLevel: 1 }, //buffer ocean
         ];
 
         // Calculate the horizontal scaling factor
@@ -560,14 +562,14 @@
             sellFishPopup.style.display = "block";
             isPaused = true;
         }
+
         // Sell fish logic
-        // Sell fish logic
-sellButton.addEventListener("click", () => {
+    sellButton.addEventListener("click", () => {
     const fishToSell = parseInt(fishToSellInput.value);
     let boatFee = boatlvl * 100; // Calculate boat fee based on boat level
     let employeeFee = employees * 30; // Calculate employee fee based on number of employees
 
-    if (fishToSell > 0 && fishToSell <= fishQuantity) {
+    if (fishToSell >= 0 && fishToSell <= fishQuantity) {
         const currentPrice = prices[Math.floor(currentX)];
         money += (fishToSell * currentPrice); // Add money from selling fish
         fishQuantity -= fishToSell; // Reduce fish quantity
@@ -608,7 +610,7 @@ sellButton.addEventListener("click", () => {
                 fishQuantity += 1 + employees; // Gain 1 fish every second
                 updateQuantityDisplay();
             }
-        }, 1000);
+        }, 1000 / oceanLevel);
 
         // Ocean choice logic
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
@@ -651,10 +653,8 @@ sellButton.addEventListener("click", () => {
         drawGraph();
         drawCurrentPriceLine();
 
-        setInterval(updateGraph, 400);
-
-
         setInterval(updateGraph, 100);
+
 
     </script>
 </body>
