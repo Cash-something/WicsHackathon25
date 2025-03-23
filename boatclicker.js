@@ -89,7 +89,7 @@ bottleButton.addEventListener("click", () => {
         message = initialMessage;
         isFirstClick = false;
     } else {
-        message = gulfMessages[Math.floor(Math.random() * gulfMessages.length)];
+        message = getMessageAdjustment(gulfMessages);
     }
 
     alert(message);
