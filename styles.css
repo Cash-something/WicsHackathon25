@@ -229,6 +229,17 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
+#upgrade-text {
+    position: absolute;
+    top: 75px; 
+    left: 50%; 
+    font-family: myFirstFont;
+    transform: translateX(-50%); 
+    font-size: 13px; 
+    font-weight: regular; 
+    color: white; 
+    z-index: 1;
+}
 #employees-popup {
     font-size: 12px;
     font-family: myFirstFont;
