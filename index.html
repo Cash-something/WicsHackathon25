@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boat Game</title>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -320,7 +321,7 @@
         function updateGraph() {
             if (isPaused) return;
 
-            if (currentX < pricesArraySize) {
+            if (currentX < pricesArraySize - 1) {
                 currentX += 1;
             } else {
                 // end of the graph reached
@@ -358,7 +359,9 @@
             drawPriceLines(); // Draw the price lines
 
             let currentPrice = prices[Math.floor(currentX)];
-            fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
+            if (typeof currentPrice === "number") {
+                fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
+            }
 
             updateMultiplier();
         }
@@ -520,6 +523,7 @@
             }
         });
 
+
         // choose ocean
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
             option.addEventListener("click", () => {
@@ -537,7 +541,7 @@
                         }
                         money -= selectedOcean.cost;
                     }
-                    priceAdjustment = 100;
+                    priceAdjustment = 1;
                     priceLowerBound = selectedOcean.pricePerFish;
                     priceUpperBound = selectedOcean.pricePerFish + 3; 
                     fishPopulation = 250; 
@@ -546,7 +550,7 @@
                     
                     if (index === 0) {
                         for (let i = 0; i < pricesArraySize; i++) {
-                            prices[i] = priceAdjustment * (Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound);
+                            prices[i] = priceAdjustment * prices[i];
                         }
                     }
 
