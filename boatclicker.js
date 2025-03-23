@@ -1,5 +1,8 @@
 let isFirstClick = true;
 
+let isBottleAnimationRunning = false;
+let bottleTimeoutId = null;
+
 const initialMessage = "Watch out for overfishing!";
 
 const gulfMessages = [
@@ -45,6 +48,8 @@ function showRandomMessage() {
     alert(gulfMessages[randomIndex]);
 }
 function showBottleAtRandom() {
+    if (!isBottleAnimationRunning) return;
+
     bottleButton.style.display = "block";
     bottleButton.style.left = "100%";
     bottleButton.style.top = '${Math.random() * 80 + 10}%';
@@ -59,18 +64,45 @@ function showBottleAtRandom() {
         const bottleLeft = parseFloat(bottleButton.style.left || "0");
         if (bottleLeft <= -10) {
             bottleButton.style.display = "none";
-            scheduleNextBottle();
+            if (isBottleAnimationRunning) {
+                scheduleNextBottle();
+            }
         }
     }, animationDuration);
 }
 
+function scheduleNextBottle() {
+    if (!isBottleAnimationRunning) return;
+    const nextAppearance = Math.random() * 5000 + 2000;
+    bottleTimeoutId = setTimeout(showBottleAtRandom, nextAppearance);
+}
+
 bottleButton.addEventListener("click", () => {
     let message;
+
+    let selectedMessages;
+    switch (oceanLevel) {
+        case 0:
+            selectedMessages = gulfMessages;
+            break;
+
+        case 1:
+            selectedMessages = medMessages;
+            break;
+
+        case 2:
+            selectedMessages = arcticMessages;
+            break;
+
+            default:
+                selectedMessages = gulfMessages;
+    }
+
     if (isFirstClick) {
         message = initialMessage;
         isFirstClick = false;
     } else {
-        message = gulfMessages[Math.floor(Math.random() * gulfMessages.length)];
+        message = selectedMessages[Math.floor(Math.random() * selectedMessages.length)];
     }
 
     alert(message);
@@ -80,11 +112,20 @@ bottleButton.addEventListener("click", () => {
 
 });
 
-function scheduleNextBottle() {
-    const nextAppearance = Math.random() * 5000 + 2000;
-    setTimeout(showBottleAtRandom, nextAppearance);
+
+
+setTimeout(() => {
+    showBottleAtRandom();
+}, 2000);
+
+function stopBottleAnimation(){
+    isBottleAnimationRunning = false;
+    clearTimeout(bottleTimeoutId);
+    bottleButton.style.transition = "none";
+    bottleButton.style.display = "none";
 }
 
+isBottleAnimationRunning = true;
 setTimeout(() => {
     showBottleAtRandom();
 }, 2000);

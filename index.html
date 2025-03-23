@@ -395,6 +395,7 @@
             if (money < 0) {
                 incrementButton.style.display = "none"; // Hide the ship
                 stopGame(); // Stop the game
+                stopBottleAnimation();
                 showGameOverPopup();
             }
         }
