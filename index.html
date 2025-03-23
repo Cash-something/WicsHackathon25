@@ -498,12 +498,14 @@
         }
 
         upgradeButton.addEventListener("click", () => {
+            isPaused = true;
             employeesPopup.style.display = "block";
             updateUDisplays();
         });
 
         closePopupButton.addEventListener("click", () => {
             employeesPopup.style.display = "none";
+            isPaused = false;
         });
 
         hireButton.addEventListener("click", () => {
