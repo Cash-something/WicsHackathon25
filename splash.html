@@ -25,7 +25,7 @@
         #splash-container {
             width: 100vw;
             height: 100vh;
-            background-image: url('Start_Screen.png');
+            background-image: url('LoadScreen.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
@@ -44,42 +44,46 @@
             text-align: center;
             font-size: 48px;
             color: rgba(0, 0, 0, 0);
-            margin-bottom: 40px;
+            margin-bottom: 0;
             opacity: 1;
             position: absolute;
-            top: 0;
-            left: center;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            top: 40%;
+            /* Adjust this if needed */
+            left: 50%;
+            transform: translate(-50%, -50%);
             image-rendering: -webkit-optimize-contrast;
-            width: 300px;
-            height: 200 px;
+            width: 600px;
+            /* Double the original width */
+            height: 400px;
+            /* Double the original height */
         }
 
         .button {
             display: inline-block;
             padding: 15px 30px;
-            font-size: 24px;
+            font-size: 30px;
             color: rgb(0, 0, 0);
             text-decoration: none;
-            background-color: rgb(104, 196, 252);
+            background-color: #e44a4a;
             border: 5px solid rgb(3, 3, 3);
             text-align: center;
-            transition: background-color 0.3s, transform 0.2s, opacity 0.5s ease;
+            transition: background-color 0.3s, opacity 0.5s ease;
             opacity: 1;
             position: absolute;
-            top: 155px;
-            left: center;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             image-rendering: pixelated;
-
+            font-family: myFirstFont;
         }
 
         .button:hover {
-            background-color: darkgray;
-            transform: scale(1.05);
+            background-color: rgb(210, 19, 19);
+            /*transform: scale(1.05);*/
         }
 
         .button:active {
-            background-color: lightgray;
+            background-color: rgb(210, 19, 19);
         }
 
         .hidden {
@@ -112,7 +116,7 @@
         #name-prompt {
             font-size: 18px;
             color: white;
-            font-weight: bold;
+            font-weight:400;
             margin: 0;
             padding: 0;
             background-color: #FFD700;
@@ -190,14 +194,13 @@
 
         .red-button {
             position: absolute;
-            top: 75%;
-            left: 70%;
+            top: 83%;
+            left: 80%;
             font-size: 24px;
             color: rgb(0, 0, 0);
             text-decoration: none;
             background-color: #8f6125;
             border: 5px solid rgb(0, 0, 0);
-            border-radius: 10px;
             text-align: center;
             font-family: myFirstFont;
 
@@ -213,7 +216,7 @@
 
         #next-button:hover {
             background-color: rgb(150, 100, 15);
-            transform: scale(1.05);
+            /*transform: scale(1.05);*/
         }
 
         #next-button:active {
@@ -225,7 +228,7 @@
 <body>
     <div id="splash-container">
         <h1 id="title">Fishy Business</h1>
-        <a id="startButton" class="button">Fish!</a>
+        <a id="startButton" class="button">GO FISH</a>
     </div>
 
     <div id="character-selection">

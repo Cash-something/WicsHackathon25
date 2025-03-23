@@ -394,7 +394,7 @@
                 employees += 1;
                 register.play();
             } else {
-                alert("Not enough money to hire an employee.");
+                
             }
             updateMoneyDisplay();
             updateUDisplays();
@@ -406,9 +406,8 @@
                 boatlvl += 1;
                 capacity += 100;
                 register.play();
-                alert(`You leveled up the Boat! Boat Level: ${boatlvl}`);
             } else {
-                alert("Not enough money to level up the Boat.");
+                
             }
             updateMoneyDisplay();
             updateUDisplays();
@@ -504,7 +503,6 @@
         });
 
 
-        // passive fish gain 
         let fishGainInterval = setInterval(() => {
             if (!isPaused && fishQuantity < capacity) {
                 fishQuantity += 1 + employees; // Gain 1 fish + employees fish every second
@@ -512,7 +510,6 @@
             }
         }, (1000 / oceanLevel));
 
-        // Add this to your existing script
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Digit8') {  // Checks if the '8' key is pressed
                 money = 99999;
@@ -536,7 +533,6 @@
                 const selectedOcean = oceans[index];
                 if (money >= selectedOcean.cost) {
                     if (index !== 0) {
-                        //pay the piper if ur movin
                         if (index == 1) {
                         document.getElementById("background").src = 'Med.png'; 
                         currentOcean = "med";
@@ -588,7 +584,7 @@
         drawCurrentPriceLine();
 
 
-        setInterval(updateGraph, 400);
+        setInterval(updateGraph, 500);
 
 
 
