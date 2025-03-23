@@ -9,18 +9,37 @@ body {
     font-family: myFirstFont;
     position: relative;
 }
+#captain {
+    z-index: -1;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: 80px;
+    top: -50px;
+}
 #game-container {
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to bottom, skyblue, deepskyblue);
     position: relative;
 }
+#background {
+    width:100%;
+    height:60%;
+    top: 0;
+}
+
+
 #ocean {
     position: absolute;
     bottom: 30%;
     width: 100%;
     height: 20%;
-    background: blue;
+    background: transparent;
+}
+#wave1{
+    width: 100%;
+    height: 110%;
+    
 }
 #boat {
     position: absolute;
@@ -167,6 +186,20 @@ body {
     line-height: 1.2;
     white-space: normal;
 }
+#boat-button{
+    font-family: myFirstFont;
+    color: white;
+    font-size: 12px;
+}
+#upgrText {
+    font-size: 12px;
+    font-family: myFirstFont;
+    color: white;
+    
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
+}
 #employee-count {
     font-size: 15px;
     font-family: myFirstFont;
@@ -254,14 +287,18 @@ body {
 #incrementButton {
     position: absolute;
     bottom: 35%;
-    left: 45%;
+    left:50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 50px;
-    background: brown;
-    border-radius: 10px;
+    width: 200px;
+    height: 100px;
+    background: transparent;   
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border: none;
     z-index: 1;
     animation: sway 2s infinite ease-in-out;
+    cursor:pointer;
 }
 
 #ocean-choice-popup {

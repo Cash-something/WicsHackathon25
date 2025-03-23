@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="styles.css"></link>
 </head>
 <body>
+
     <div id="game-container">
+        <img id="background" src="Gulf.png" alt="Background Image" >
         <span id="quantityText">Quantity: 0</span>
-        <button id="incrementButton">+</button>
+        <button id="incrementButton" style="background-image: url(Rowboat.png);">
+            <div id="people">
+                <img id="captain" src="Captain.png" alt="Captain Image" >
+            </div>
+        </button>
         <div id="money">$1000</div>
         <div id="fish-price">Fish Price: $10</div>
         <button id="upgrade-button" >
-            <img src="upgrade-button.svg" alt="Upgrade Icon" width="100" height="150">
+            <img src="upgrade-button.svg" alt="Upgrade Icon" width="100" height="150"% > 
         </button>
         <div id="employees-popup">
             <p>Manage Employees</p>
@@ -22,7 +28,8 @@
             </button>
             <p id="empCount">Employees: <span id="employee-count">0</span></p>
             <button id="boat-button">
-                <p id="hireText">Upgr. Boat ($1000)</p>
+                <img
+                <p id="upgrText">Upgr. Boat ($1000)</p>
                 </button>
             <p>Boat Level: <span id="boat-level">0</span></p>
             <button id="close-popup">
@@ -31,7 +38,9 @@
                 </p>
             </button>
         </div>
-        <div id="ocean"></div>
+        <div id="ocean">
+            <img src="Wave.png" id="wave1">
+        </div>
         <canvas id="stock-graph"></canvas>
 
         <!-- Sell Fish Popup -->
@@ -133,6 +142,10 @@
         function updateUDisplays() {
             employeeCount.textContent = employees;
             boatLevel.textContent = boatlvl;
+            if(boatlvl == 1) {
+                document.getElementById("incrementButton").style.backgroundImage = "url(Sailboat.png)"; 
+                document.getElementById("captain").style.height = "200px";
+            }
         }
 
         // Draw the stock graph
@@ -145,7 +158,7 @@
                 let y1 = canvas.height - (prices[i - 1] / priceUpperBound) * canvas.height + verticalOffset;
                 let y2 = canvas.height - (prices[i] / priceUpperBound) * canvas.height + verticalOffset;
                 ctx.strokeStyle = "#7ddd3e";
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 5;
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
@@ -281,6 +294,7 @@
                 if (money >= selectedOcean.cost) {
                     if (index !== 0) {
                         // Deduct cost only if not staying in the current ocean
+                        document.getElementById("background").src = 'Med.png'; 
                         money -= selectedOcean.cost;
                     }
                     priceLowerBound = selectedOcean.pricePerFish;
