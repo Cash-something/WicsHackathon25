@@ -13,7 +13,8 @@
         <span id="quantityText">Quantity: 0</span>
         <button id="incrementButton" style="background-image: url(Rowboat.png);">
             <div id="people">
-                <img id="captain" src="Captain.png" alt="Captain Image" >
+                <img id="captain" src="Captain.png" alt="Captain Image" style="top: -50px";> 
+                <img id="tyler" src="Tyler.png" alt="Tyler Image" style="top: -50px; opacity: 0;" > 
             </div>
         </button>
         <div id="money">$1000</div>
@@ -142,9 +143,13 @@
         function updateUDisplays() {
             employeeCount.textContent = employees;
             boatLevel.textContent = boatlvl;
+            if(employees == 1) {
+                document.getElementById("tyler").style.opacity = "1";
+            }
             if(boatlvl == 1) {
                 document.getElementById("incrementButton").style.backgroundImage = "url(Sailboat.png)"; 
-                document.getElementById("captain").style.height = "200px";
+                document.getElementById("captain").style.top = "-20px";
+                document.getElementById("tyler").style.top = "-20px";
             }
         }
 

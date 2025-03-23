@@ -15,7 +15,13 @@ body {
     height: 70px;
     position: relative;
     left: 80px;
-    top: -50px;
+}
+#tyler {
+    z-index: -1;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: -50px;
 }
 #game-container {
     width: 100vw;
@@ -58,12 +64,37 @@ body {
     font-size: 20px;
     color: white;
 }
+#sell-button {
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(BUY.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
 #fish-price {
     position: absolute;
     top: 40px;
     left: 10px;
     font-size: 20px;
     color: white;
+}
+#fish-to-sell{
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(TextHolder.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    outline: none;
 }
 #quantityText {
     position: absolute;
@@ -101,9 +132,14 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
+    background-image: url(FishPrompt.png);
+    background-repeat: no-repeat;
+    background-size: contain;       
+    background-position: center;
     padding: 20px;
     border-radius: 10px;
+    height: 200px;
+    width: 267px;
     color: white;
     text-align: center;
     display: none;
@@ -286,17 +322,17 @@ body {
 }
 #incrementButton {
     position: absolute;
-    bottom: 35%;
+    bottom: 30%;
     left:50%;
     transform: translateX(-50%);
-    width: 200px;
-    height: 100px;
+    width: 300px;
+    height: 200px;
     background: transparent;   
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     border: none;
-    z-index: 1;
+    z-index: 0;
     animation: sway 2s infinite ease-in-out;
     cursor:pointer;
 }
