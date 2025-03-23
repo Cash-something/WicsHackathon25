@@ -342,6 +342,7 @@
 
                 
                 currentX = 0;
+                console.log(priceLowerBound, priceUpperBound);
                 prices = Array.from({ length: pricesArraySize }, () =>
                     Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
                 );
@@ -539,11 +540,21 @@
                         if (index == 1) {
                         document.getElementById("background").src = 'Med.png'; 
                         currentOcean = "med";
+                        priceLowerBound = 5;
+                        priceUpperBound = 8;
+                        prices = Array.from({ length: pricesArraySize }, () =>
+                    Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
+                );
                         
                         }
                         if (index == 2) {
                             document.getElementById("background").src = 'Arctic.png';
                             currentOcean = "arctic";
+                            priceLowerBound = 7;
+                            priceUpperBound = 10;
+                            prices = Array.from({ length: pricesArraySize }, () =>
+                                Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
+                            );
                         }
                         money -= selectedOcean.cost;
                     }
