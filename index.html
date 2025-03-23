@@ -55,16 +55,18 @@
             <p>Choose an ocean:</p>
             <div class="ocean-option" id="ocean-option-1">
                 <p>Stay in Current Ocean</p>
-                <p>Price per fish: <span id="adjusted-price-range">$3 - $6</span></p>
+                <p>Price per fish: <span id="adjusted-price-range">$3 - 6</span></p>
                 <p>Fish gain rate: 1 fish/sec</p>
                 <p>Cost to go: Free</p>
             </div>
             <div class="ocean-option" id="ocean-option-2">
+                <p>Mediterranean Ocean</p>
                 <p>Price per fish: $5-8</p>
                 <p>Fish gain rate: 2 fish/sec</p>
                 <p>Cost to go: $1000</p>
             </div>
             <div class="ocean-option" id="ocean-option-3">
+                <p>Arctic Ocean</p>
                 <p>Price per fish: $7-10</p>
                 <p>Fish gain rate: 3 fish/sec</p>
                 <p>Cost to go: $1500</p>
@@ -146,6 +148,7 @@
                 document.getElementById("incrementButton").style.backgroundImage = "url(Sailboat.png)"; 
                 document.getElementById("captain").style.height = "200px";
             }
+
         }
 
         // Draw the stock graph
@@ -191,7 +194,7 @@
                 const adjustedPriceMax = priceUpperBound * priceAdjustment;
 
                 // Update the adjusted price range in the ocean choice popup
-                adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - $${adjustedPriceMax.toFixed(2)}`;
+                adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - ${adjustedPriceMax.toFixed(2)}`;
 
                 // Show the ocean choice popup
                 oceanChoicePopup.style.display = "block";
@@ -294,7 +297,13 @@
                 if (money >= selectedOcean.cost) {
                     if (index !== 0) {
                         // Deduct cost only if not staying in the current ocean
+                        if (index == 1) {
                         document.getElementById("background").src = 'Med.png'; 
+                        
+                        }
+                        if (index == 2) {
+                            document.getElementById("background").src = 'Arctic.png'; 
+                        }
                         money -= selectedOcean.cost;
                     }
                     priceLowerBound = selectedOcean.pricePerFish;
