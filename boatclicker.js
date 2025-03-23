@@ -150,23 +150,40 @@ document.head.insertAdjacentHTML("beforeend", `
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: white;
+        background-image: url('scroll.png'); /* Set the background image */
+        background-size: cover; /* Ensure the image covers the entire popup */
+        background-position: center; /* Center the image */
         padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
         z-index: 1000;
+        width: 500px; /* Adjust width as needed */
+        height: 210px; /* Adjust height as needed */
+        color: black; /* Set text color to contrast with the background */
+        text-align: center; /* Center the text */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .popup-message button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background: #007BFF;
-        color: white;
-        border: none;
+        margin: 0; /* Remove margin */
+        padding: 0; /* Remove padding */
+        background-image: url('blackbutton.png'); /* Set the button background image */
+        background-size: contain; /* Ensure the image fits within the button */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Prevent the image from repeating */
+        color: white; /* Set text color to contrast with the button */
+        border: none; /* Remove border */
         cursor: pointer;
+        width: 90px; /* Set width to match the PNG image */
+        height: 38px; /* Set height to match the PNG image */
+        font-size: 16px; /* Adjust font size as needed */
+        display: flex;
+        background-color: transparent;
+        justify-content: center;
+        align-items: center;
     }
     .popup-message button:hover {
-        background: #0056b3;
+        opacity: 0.8; /* Slightly fade the button on hover */
     }
     </style>
-    `);
-    
+`);
