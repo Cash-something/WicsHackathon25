@@ -164,7 +164,31 @@
             z-index: 1;
             animation: sway 2s infinite ease-in-out;
         }
-        
+
+        #ocean-choice-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+        #ocean-choice-popup .ocean-option {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #ocean-choice-popup .ocean-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         @keyframes sway {
             0%, 100% {
                 transform: translateX(0);
@@ -204,6 +228,26 @@
             <button id="sell-button">Complete</button>
         </div>
 
+        <!-- Ocean Choice Popup -->
+        <div id="ocean-choice-popup">
+            <p>Choose an ocean:</p>
+            <div class="ocean-option" id="ocean-option-1">
+                <p>Stay in Current Ocean</p>
+                <p>Price per fish: <span id="adjusted-price-range">$3 - $6</span></p>
+                <p>Fish gain rate: 1 fish/sec</p>
+                <p>Cost to go: Free</p>
+            </div>
+            <div class="ocean-option" id="ocean-option-2">
+                <p>Price per fish: $5</p>
+                <p>Fish gain rate: 2 fish/sec</p>
+                <p>Cost to go: $1000</p>
+            </div>
+            <div class="ocean-option" id="ocean-option-3">
+                <p>Price per fish: $7</p>
+                <p>Fish gain rate: 3 fish/sec</p>
+                <p>Cost to go: $1500</p>
+            </div>
+        </div>
 
     </div>
 
@@ -225,10 +269,22 @@
         const boatLevel = document.getElementById("boat-level");
         const closePopupButton = document.getElementById("close-popup");
         let fishQuantity = 0;
+        let fishPopulation = 250; // Initialize fish population
+        let totalFishSold = 0; // Total fish sold
         const pricesArraySize = 100;
-        let prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
+
+        // Global variables for price bounds
+        let priceLowerBound = 3; // Lower bound for prices
+        let priceUpperBound = 6; // Upper bound for prices
+
+        // Initialize prices array with values between priceLowerBound and priceUpperBound
+        let prices = Array.from({ length: pricesArraySize }, () => 
+            Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
+        );
+
         let currentX = 0;
         let isPaused = false;
+        let priceAdjustment = 1; // Initialize price adjustment factor
 
         // DOM elements
         const fishPriceElement = document.getElementById("fish-price");
@@ -238,6 +294,15 @@
         const fishToSellInput = document.getElementById("fish-to-sell");
         const sellButton = document.getElementById("sell-button");
         const incrementButton = document.getElementById("incrementButton");
+        const oceanChoicePopup = document.getElementById("ocean-choice-popup");
+        const adjustedPriceRange = document.getElementById("adjusted-price-range");
+
+        // Ocean options data
+        const oceans = [
+            { pricePerFish: 3, fishGainRate: 1, cost: 0 }, // Stay in current ocean (free)
+            { pricePerFish: 5, fishGainRate: 2, cost: 1000 },
+            { pricePerFish: 7, fishGainRate: 3, cost: 1500 }
+        ];
 
         // Calculate the horizontal scaling factor
         const xScale = canvas.width / (pricesArraySize - 1);
@@ -263,8 +328,8 @@
             for (let i = 1; i < currentX; i++) {
                 let x1 = (i - 1) * xScale;
                 let x2 = i * xScale;
-                let y1 = canvas.height - (prices[i - 1] / 10) * canvas.height;
-                let y2 = canvas.height - (prices[i] / 10) * canvas.height;
+                let y1 = canvas.height - (prices[i - 1] / priceUpperBound) * canvas.height;
+                let y2 = canvas.height - (prices[i] / priceUpperBound) * canvas.height;
                 ctx.strokeStyle = prices[i] < prices[i - 1] ? "red" : "green";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -291,8 +356,23 @@
             if (currentX < pricesArraySize) {
                 currentX += 1;
             } else {
+                // End of the graph reached
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // Update price adjustment
+                const adjustedPriceMin = priceLowerBound * priceAdjustment;
+                const adjustedPriceMax = priceUpperBound * priceAdjustment;
+
+                // Update the adjusted price range in the ocean choice popup
+                adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - $${adjustedPriceMax.toFixed(2)}`;
+
+                // Show the ocean choice popup
+                oceanChoicePopup.style.display = "block";
+                isPaused = true;
+
+                // Reset currentX and regenerate prices
                 currentX = 0;
-                prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
+                prices = Array.from({ length: pricesArraySize }, () => 
+                    Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
+                );
             }
 
             // Check if currentX reaches 25% or 75% of the array size
@@ -346,6 +426,14 @@
                 const currentPrice = prices[Math.floor(currentX)];
                 money += (fishToSell * currentPrice);
                 fishQuantity -= fishToSell;
+                totalFishSold += fishToSell; // Update total fish sold
+
+                // Update prices after currentX
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
+                for (let i = currentX; i < pricesArraySize; i++) {
+                    prices[i] = priceAdjustment * prices[i]; // Scale to fit the graph
+                }
+
                 updateMoneyDisplay();
                 updateQuantityDisplay();
             }
@@ -368,6 +456,36 @@
             }
         }, 1000);
 
+        // Ocean choice logic
+        document.querySelectorAll(".ocean-option").forEach((option, index) => {
+            option.addEventListener("click", () => {
+                const selectedOcean = oceans[index];
+                if (money >= selectedOcean.cost) {
+                    if (index !== 0) {
+                        // Deduct cost only if not staying in the current ocean
+                        money -= selectedOcean.cost;
+                    }
+                    priceLowerBound = selectedOcean.pricePerFish;
+                    priceUpperBound = selectedOcean.pricePerFish + 3; // Adjust upper bound
+                    fishPopulation = 250; // Reset fish population
+                    totalFishSold = 0; // Reset total fish sold
+
+                    // Apply price adjustment if staying in the current ocean
+                    if (index === 0) {
+                        for (let i = 0; i < pricesArraySize; i++) {
+                            prices[i] = priceAdjustment * (Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound);
+                        }
+                    }
+
+                    updateMoneyDisplay();
+                    oceanChoicePopup.style.display = "none";
+                    isPaused = false;
+                } else {
+                    alert("Not enough money to go to this ocean!");
+                }
+            });
+        });
+
         // Initialize displays
         updateMoneyDisplay();
         updateQuantityDisplay();
@@ -375,7 +493,7 @@
         // Start the graph update loop
         drawGraph();
         drawCurrentPriceLine();
-        setInterval(updateGraph, 400);
+        setInterval(updateGraph, 100);
     </script>
 </body>
 </html>
