@@ -1,35 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boat Game</title>
-    <link rel="stylesheet" href="styles.css"></link>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, skyblue, deepskyblue);
+            position: relative;
+        }
+
+        #ocean {
+            position: absolute;
+            bottom: 30%;
+            width: 100%;
+            height: 20%;
+            background: blue;
+        }
+
+        #boat {
+            position: absolute;
+            bottom: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            background: brown;
+            border-radius: 10px;
+        }
+
+        #money {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        #fish-price {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        #quantityText {
+            position: absolute;
+            top: 70px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        #numberDisplay {
+            position: absolute;
+            top: 70px;
+            left: 150px;
+            font-size: 20px;
+            color: white;
+        }
+
+        #options {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        #stock-graph {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 20%;
+            background: black;
+        }
+
+        #sell-fish-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        #sell-fish-popup input {
+            padding: 5px;
+            font-size: 16px;
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        #sell-fish-popup button {
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #upgrade-button {
+            position: absolute;
+            top: 25px;
+            right: 10px;
+            font-size: 20px;
+            padding: 10px;
+            background: orange;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #employees-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        #employees-popup button {
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #employeetext {
+            position: absolute;
+            bottom: 75px;
+            right: 20px;
+            font-size: 20px;
+            color: white;
+            background: brown;
+            padding: 5px;
+        }
+
+        #boattext {
+            position: absolute;
+            bottom: 75px;
+            right: 20px;
+            font-size: 20px;
+            color: white;
+            background: brown;
+            padding: 5px;
+        }
+
+        #incrementButton {
+            position: absolute;
+            bottom: 35%;
+            left: 45%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 50px;
+            background: brown;
+            border-radius: 10px;
+            z-index: 1;
+            animation: sway 2s infinite ease-in-out;
+        }
+
+        #fees {
+            margin-top: 10px;
+            font-size: 16px;
+            color: lightgray;
+        }
+
+        
+
+
+        #ocean-choice-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        #ocean-choice-popup .ocean-option {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #ocean-choice-popup .ocean-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #bottleButton {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: url('bottle.png') no-repeat center center;
+            background-size: contain;
+            width: 100px;
+            height: 100px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            transition: left 5s linear;
+            z-index: 1;
+        }
+
+        #game-over-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 20;
+        }
+
+        #game-over-popup button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: orange;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+
+
+        @keyframes sway {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-3px);
+            }
+
+            75% {
+                transform: translateX(3px);
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div id="game-container">
         <span id="quantityText">Quantity: 0</span>
         <button id="incrementButton">+</button>
+        <button id="bottleButton"></button>
         <div id="money">$1000</div>
         <div id="fish-price">Fish Price: $10</div>
-        <button id="upgrade-button" >
-            <img src="upgrade-button.svg" alt="Upgrade Icon" width="100" height="150">
-        </button>
+        <div id="options">⚙️</div>
+        <button id="upgrade-button">Upgrade</button>
         <div id="employees-popup">
             <p>Manage Employees</p>
-            <button id="hire-button">
-                <p id="hireText">Hire ($50)</p>
-            </button>
-            <p id="empCount">Employees: <span id="employee-count">0</span></p>
-            <button id="boat-button">
-                <p id="hireText">Upgr. Boat ($1000)</p>
-                </button>
+            <button id="hire-button">Hire Employee ($50)</button>
+            <p>Employees: <span id="employee-count">0</span></p>
+            <button id="boat-button">Upgrade Boat ($1000)</button>
             <p>Boat Level: <span id="boat-level">0</span></p>
-            <button id="close-popup">
-                <p id = "close">
-                    Close
-                </p>
-            </button>
+            <button id="close-popup">Close</button>
         </div>
         <div id="ocean"></div>
         <canvas id="stock-graph"></canvas>
@@ -37,8 +301,24 @@
         <!-- Sell Fish Popup -->
         <div id="sell-fish-popup">
             <p>How many fish would you like to sell?</p>
-            <input type="number" id="fish-to-sell" min="0" value="0">    
+            <input type="number" id="fish-to-sell" min="0" value="0">
+
+            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>
+
+            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>    
+          
+
             <button id="sell-button">Complete</button>
+        </div>
+
+        <button id="decrement-money-button" style="position: absolute; top: 100px; left: 10px; font-size: 20px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
+            Lose $20
+        </button>
+
+        
+        <div id="game-over-popup">
+            <p>You've lost the game!</p>
+            <button id="restart-button">Restart Game</button>
         </div>
 
         <!-- Ocean Choice Popup -->
@@ -63,17 +343,20 @@
         </div>
 
     </div>
-
+    <script src="boatclicker.js"></script>
     <script>
+
         const canvas = document.getElementById("stock-graph");
         const ctx = canvas.getContext("2d");
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
         // Game state
-        let money = 1000;
+
+        let money = 10000;
+
         let employees = 0;
-        let boatlvl = 0;
+        let boatlvl = 1;
         const upgradeButton = document.getElementById("upgrade-button");
         const employeesPopup = document.getElementById("employees-popup");
         const hireButton = document.getElementById("hire-button");
@@ -85,23 +368,30 @@
         let fishPopulation = 250; // Initialize fish population
         let totalFishSold = 0; // Total fish sold
         const pricesArraySize = 100;
+        let oceanLevel = 1;
 
         // Global variables for price bounds
         let priceLowerBound = 3; // Lower bound for prices
         let priceUpperBound = 6; // Upper bound for prices
 
         // Initialize prices array with values between priceLowerBound and priceUpperBound
-        let prices = Array.from({ length: pricesArraySize }, () => 
+        let prices = Array.from({ length: pricesArraySize }, () =>
             Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
         );
 
         let currentX = 0;
         let isPaused = false;
+
+        let sellingPoint = null;
+
         let priceAdjustment = 1; // Initialize price adjustment factor
+
 
         // DOM elements
         const fishPriceElement = document.getElementById("fish-price");
         const moneyElement = document.getElementById("money");
+        const bfeesElement = document.getElementById("bfees");
+        const efeesElement = document.getElementById("efees");
         const quantityText = document.getElementById("quantityText");
         const sellFishPopup = document.getElementById("sell-fish-popup");
         const fishToSellInput = document.getElementById("fish-to-sell");
@@ -123,7 +413,40 @@
         // Update money display
         function updateMoneyDisplay() {
             moneyElement.textContent = `$${money.toFixed(2)}`;
+            checkIfShipSinks(); // Check if the ship should sink
         }
+
+        // Function to check if the ship should sink
+        function checkIfShipSinks() {
+            if (money < 0) {
+                incrementButton.style.display = "none"; // Hide the ship
+                stopGame(); // Stop the game
+                showGameOverPopup();
+            }
+        }
+
+        function stopGame() {
+            clearInterval(fishGainInterval); // Stop the passive fish gain
+            isPaused = true; // Pause the graph and other updates
+        }
+
+        function showGameOverPopup() {
+            const gameOverPopup = document.getElementById("game-over-popup");
+            gameOverPopup.style.display = "block"; // Show the popup
+        }
+
+        
+        // Add event listener for the new decrement money button
+        const decrementMoneyButton = document.getElementById("decrement-money-button");
+        decrementMoneyButton.addEventListener("click", () => {
+            money -= 20; // Decrement money by 20
+            updateMoneyDisplay(); // Update the money display and check if the ship sinks
+        });
+
+        const restartButton = document.getElementById("restart-button");
+        restartButton.addEventListener("click", () => {
+            location.reload(); // Reload the page to restart the game
+        });
 
         // Update fish quantity display
         function updateQuantityDisplay() {
@@ -135,82 +458,100 @@
             boatLevel.textContent = boatlvl;
         }
 
+
+
         // Draw the stock graph
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const verticalOffset = 47;
             for (let i = 1; i < currentX; i++) {
                 let x1 = (i - 1) * xScale;
                 let x2 = i * xScale;
-                let y1 = canvas.height - (prices[i - 1] / priceUpperBound) * canvas.height + verticalOffset;
-                let y2 = canvas.height - (prices[i] / priceUpperBound) * canvas.height + verticalOffset;
-                ctx.strokeStyle = "#7ddd3e";
+                let y1 = canvas.height - (prices[i - 1] / priceUpperBound) * canvas.height;
+                let y2 = canvas.height - (prices[i] / priceUpperBound) * canvas.height;
+                ctx.strokeStyle = prices[i] < prices[i - 1] ? "red" : "green";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
             }
-            
+            drawPriceLines();
+
         }
-        
 
         // Draw the current price line
         function drawCurrentPriceLine() {
             let scaledX = currentX * xScale;
-            ctx.strokeStyle = "#7ddd3e";
+            ctx.strokeStyle = "red";
             ctx.beginPath();
             ctx.moveTo(scaledX, 0);
             ctx.lineTo(scaledX, canvas.height);
             ctx.stroke();
         }
 
-        // Update the graph and check for pause points
-        function updateGraph() {
-            if (isPaused) return;
+        function drawPriceLines() {
+            const importantPoints = [25, 75]; // Always show yellow lines at these points
 
-            if (currentX < pricesArraySize) {
-                currentX += 1;
-            } else {
-                // End of the graph reached
-                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // Update price adjustment
-                const adjustedPriceMin = priceLowerBound * priceAdjustment;
-                const adjustedPriceMax = priceUpperBound * priceAdjustment;
-
-                // Update the adjusted price range in the ocean choice popup
-                adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - $${adjustedPriceMax.toFixed(2)}`;
-
-                // Show the ocean choice popup
-                oceanChoicePopup.style.display = "block";
-                isPaused = true;
-
-                // Reset currentX and regenerate prices
-                currentX = 0;
-                prices = Array.from({ length: pricesArraySize }, () => 
-                    Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
-                );
-            }
-
-            // Check if currentX reaches 25% or 75% of the array size
-            if (currentX === 25 || currentX === 75) {
-                isPaused = true;
-                sellFishPopup.style.display = "block"; // Show the sell fish popup
-            }
-
-            drawGraph();
-            drawCurrentPriceLine();
-            let currentPrice = prices[Math.floor(currentX)];
-            fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
+            importantPoints.forEach((point) => {
+                let scaledX = (point / 100) * canvas.width; // Convert percentage to canvas width
+                ctx.strokeStyle = "yellow"; // Set color to yellow
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(scaledX, 0);
+                ctx.lineTo(scaledX, canvas.height);
+                ctx.stroke();
+            });
         }
+
+        let sellingPoints = [];
+        // Update the graph and check for pause points
+    function updateGraph() {
+        if (isPaused) return;
+
+        if (currentX < pricesArraySize) {
+            currentX += 1;
+        } else {
+            // End of the graph reached
+            priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // Update price adjustment
+            const adjustedPriceMin = priceLowerBound * priceAdjustment;
+            const adjustedPriceMax = priceUpperBound * priceAdjustment;
+
+            // Update the adjusted price range in the ocean choice popup
+            adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - $${adjustedPriceMax.toFixed(2)}`;
+
+            // Show the ocean choice popup
+            oceanChoicePopup.style.display = "block";
+            isPaused = true;
+
+            // Reset currentX and regenerate prices
+            currentX = 0;
+            prices = Array.from({ length: pricesArraySize }, () =>
+                Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
+            );
+        }
+
+        // Check if currentX reaches 25% or 75% of the array size
+        if (currentX === 25 || currentX === 75) {
+            openSellPopup();
+        }
+
+        drawGraph(); // Draw the graph
+        drawCurrentPriceLine(); // Draw the current price line
+        drawPriceLines(); // Draw the price lines
+
+        let currentPrice = prices[Math.floor(currentX)];
+        fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
+    }
+
         upgradeButton.addEventListener("click", () => {
+            isPaused = true;
             employeesPopup.style.display = "block";
-            isPaused = true; // Pause the graph
             updateUDisplays();
         });
 
         closePopupButton.addEventListener("click", () => {
             employeesPopup.style.display = "none";
-            isPaused = false; // Resume the graph
+            isPaused = false;
         });
 
         hireButton.addEventListener("click", () => {
@@ -236,26 +577,46 @@
             updateMoneyDisplay();
             updateUDisplays();
         });
+        function updateFeesDisplay() {
+            let boatFee = boatlvl * 100;
+            let employeeFee = employees * 30;
+            document.getElementById("boat-fee").textContent = boatFee;
+            document.getElementById("employee-fee").textContent = employeeFee;
+        }
+
+        function openSellPopup() {
+            updateFeesDisplay(); // Update fees display
+            sellFishPopup.style.display = "block";
+            isPaused = true;
+            sellingPoint = { x: currentX };
+        }
 
         // Sell fish logic
         sellButton.addEventListener("click", () => {
             const fishToSell = parseInt(fishToSellInput.value);
+            let boatFee = boatlvl * 100;
+            let employeeFee = employees * 30;
+
             if (fishToSell > 0 && fishToSell <= fishQuantity) {
                 const currentPrice = prices[Math.floor(currentX)];
-                money += (fishToSell * currentPrice);
-                fishQuantity -= fishToSell;
+                money += fishToSell * currentPrice; // Add money from selling fish
+                fishQuantity -= fishToSell; // Deduct sold fish from quantity
+
+                money -= boatFee; // Deduct boat fee
+                money -= employeeFee; // Deduct employee fee
+
+                updateMoneyDisplay(); // Update money display
+                updateQuantityDisplay(); // Update fish quantity display
+
                 totalFishSold += fishToSell; // Update total fish sold
 
                 // Update prices after currentX
                 priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
                 for (let i = currentX; i < pricesArraySize; i++) {
-                    prices[i] = priceAdjustment * prices[i]; // Scale to fit the graph
+                    prices[i] = priceAdjustment * prices[i]; // Scale prices based on fish population
                 }
-
-                updateMoneyDisplay();
-                updateQuantityDisplay();
             }
-            
+
             sellFishPopup.style.display = "none"; // Hide the popup
             isPaused = false; // Resume the graph
         });
@@ -267,12 +628,12 @@
         });
 
         // Passive fish gain over time
-        setInterval(() => {
+        let fishGainInterval = setInterval(() => {
             if (!isPaused) {
-                fishQuantity += 1 +employees; // Gain 1 fish every second
+                fishQuantity += 1 + employees; // Gain 1 fish + employees fish every second
                 updateQuantityDisplay();
             }
-        }, 1000);
+        }, (1000/oceanLevel));
 
         // Ocean choice logic
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
@@ -311,7 +672,13 @@
         // Start the graph update loop
         drawGraph();
         drawCurrentPriceLine();
-        setInterval(updateGraph, 100);
+
+        setInterval(updateGraph, 400);
+
+
+        
+
     </script>
 </body>
+
 </html>
