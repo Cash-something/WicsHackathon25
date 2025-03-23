@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,14 @@
             font-family: Arial, sans-serif;
             position: relative;
         }
+
         #game-container {
             width: 100vw;
             height: 100vh;
             background: linear-gradient(to bottom, skyblue, deepskyblue);
             position: relative;
         }
+
         #ocean {
             position: absolute;
             bottom: 30%;
@@ -24,6 +27,7 @@
             height: 20%;
             background: blue;
         }
+
         #boat {
             position: absolute;
             bottom: 35%;
@@ -34,6 +38,7 @@
             background: brown;
             border-radius: 10px;
         }
+
         #money {
             position: absolute;
             top: 10px;
@@ -41,6 +46,7 @@
             font-size: 20px;
             color: white;
         }
+
         #fish-price {
             position: absolute;
             top: 40px;
@@ -48,6 +54,7 @@
             font-size: 20px;
             color: white;
         }
+
         #quantityText {
             position: absolute;
             top: 70px;
@@ -55,6 +62,7 @@
             font-size: 20px;
             color: white;
         }
+
         #numberDisplay {
             position: absolute;
             top: 70px;
@@ -62,6 +70,7 @@
             font-size: 20px;
             color: white;
         }
+
         #options {
             position: absolute;
             top: 10px;
@@ -70,6 +79,7 @@
             color: white;
             cursor: pointer;
         }
+
         #stock-graph {
             position: absolute;
             bottom: 5%;
@@ -79,7 +89,8 @@
             height: 20%;
             background: black;
         }
-        #sell-fish-popup{
+
+        #sell-fish-popup {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -92,17 +103,20 @@
             display: none;
             z-index: 10;
         }
+
         #sell-fish-popup input {
             padding: 5px;
             font-size: 16px;
             width: 100px;
             margin-bottom: 10px;
         }
+
         #sell-fish-popup button {
             padding: 5px 10px;
             font-size: 16px;
             cursor: pointer;
         }
+
         #upgrade-button {
             position: absolute;
             top: 25px;
@@ -115,6 +129,7 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         #employees-popup {
             position: absolute;
             top: 50%;
@@ -128,12 +143,14 @@
             display: none;
             z-index: 10;
         }
+
         #employees-popup button {
             padding: 5px 10px;
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
         }
+
         #employeetext {
             position: absolute;
             bottom: 75px;
@@ -143,6 +160,7 @@
             background: brown;
             padding: 5px;
         }
+
         #boattext {
             position: absolute;
             bottom: 75px;
@@ -152,6 +170,7 @@
             background: brown;
             padding: 5px;
         }
+
         #incrementButton {
             position: absolute;
             bottom: 35%;
@@ -164,25 +183,31 @@
             z-index: 1;
             animation: sway 2s infinite ease-in-out;
         }
+
         #fees {
             margin-top: 10px;
             font-size: 16px;
             color: lightgray;
         }
-        
+
         @keyframes sway {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateX(0);
             }
+
             25% {
                 transform: translateX(-3px);
             }
+
             75% {
                 transform: translateX(3px);
             }
         }
     </style>
 </head>
+
 <body>
     <div id="game-container">
         <span id="quantityText">Quantity: 0</span>
@@ -206,7 +231,7 @@
         <div id="sell-fish-popup">
             <p>How many fish would you like to sell?</p>
             <input type="number" id="fish-to-sell" min="0" value="0">
-            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>    
+            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>
             <button id="sell-button">Complete</button>
         </div>
 
@@ -235,6 +260,7 @@
         let prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
         let currentX = 0;
         let isPaused = false;
+        let sellingPoint = null;
 
         // DOM elements
         const fishPriceElement = document.getElementById("fish-price");
@@ -282,6 +308,8 @@
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
             }
+            drawPriceLines();
+
         }
 
         // Draw the current price line
@@ -294,6 +322,21 @@
             ctx.stroke();
         }
 
+        function drawPriceLines() {
+            const importantPoints = [25, 75]; // Always show yellow lines at these points
+
+    importantPoints.forEach((point) => {
+        let scaledX = point * xScale;
+        ctx.strokeStyle = "yellow"; // Set color to yellow
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(scaledX, 0);
+        ctx.lineTo(scaledX, canvas.height);
+        ctx.stroke();
+    });
+        }
+
+        let sellingPoints = [];
         // Update the graph and check for pause points
         function updateGraph() {
             if (isPaused) return;
@@ -303,15 +346,18 @@
             } else {
                 currentX = 0;
                 prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
+                sellingPoints = [Math.floor(pricesArraySize * 0.25), Math.floor(pricesArraySize * 0.75)];
             }
 
             // Check if currentX reaches 25% or 75% of the array size
             if (currentX === 25 || currentX === 75) {
                 openSellPopup();
+                
             }
 
             drawGraph();
-            drawCurrentPriceLine();
+drawCurrentPriceLine();
+drawPriceLines();
             let currentPrice = prices[Math.floor(currentX)];
             fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
         }
@@ -358,6 +404,7 @@
             updateFeesDisplay();
             sellFishPopup.style.display = "block";
             isPaused = true;
+            sellingPoint = {x: currentX};
         }
         // Sell fish logic
         sellButton.addEventListener("click", () => {
@@ -369,16 +416,16 @@
                 money += (fishToSell * currentPrice);
 
                 fishQuantity -= fishToSell;
-                
+
             }
-            
-                money -= boatFee;
-                money -= employeeFee;
-                
-            
-            
+
+            money -= boatFee;
+            money -= employeeFee;
+
+
+
             updateMoneyDisplay();
-                updateQuantityDisplay();
+            updateQuantityDisplay();
             sellFishPopup.style.display = "none"; // Hide the popup
             isPaused = false; // Resume the graph
         });
@@ -392,7 +439,7 @@
         // Passive fish gain over time
         setInterval(() => {
             if (!isPaused) {
-                fishQuantity += 1 +employees; // Gain 1 fish every second
+                fishQuantity += 1 + employees; // Gain 1 fish every second
                 updateQuantityDisplay();
             }
         }, 1000);
@@ -409,4 +456,5 @@
 
     </script>
 </body>
+
 </html>
