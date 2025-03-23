@@ -1,12 +1,15 @@
 let isFirstClick = true;
 
+let isBottleAnimationRunning = false;
+let bottleTimeoutId = null;
+
 const initialMessage = "Watch out for overfishing!";
 
 const gulfMessages = [
     //Low Prices 0-2
     "U.S. Fish Market: Plentiful Supply, Low Prices.",
     "Gulf Overfishing Floods Markets: Seafood Prices Plunge To Record Lows.",
-    "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Fishing Overfishing.",
+    "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Overfishing.",
 
     //High Prices 3-5
     "Louisiana's Seafood Industry Under Duress After Four Hurricanes In Two Years",
@@ -57,6 +60,8 @@ function showRandomMessage() {
     createPopup(gulfMessages[randomIndex]);
 }
 function showBottleAtRandom() {
+    if (!isBottleAnimationRunning) return;
+
     bottleButton.style.display = "block";
     bottleButton.style.left = "100%";
     bottleButton.style.top = '${Math.random() * 80 + 10}%';
@@ -71,9 +76,33 @@ function showBottleAtRandom() {
         const bottleLeft = parseFloat(bottleButton.style.left || "0");
         if (bottleLeft <= -10) {
             bottleButton.style.display = "none";
-            scheduleNextBottle();
+            if (isBottleAnimationRunning) {
+                scheduleNextBottle();
+            }
         }
     }, animationDuration);
+}
+
+function scheduleNextBottle() {
+    if (!isBottleAnimationRunning) return;
+    const nextAppearance = Math.random() * 10000 + 2000;
+    bottleTimeoutId = setTimeout(showBottleAtRandom, nextAppearance);
+}
+
+function getMessageAdjustment(messages) {
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const selectedMessage = messages[randomIndex];
+
+    if(randomIndex <= 2) {
+        priceAdjustment -= 0.2;
+    }
+    else {
+        priceAdjustment += 0.2;
+    }
+
+    priceAdjustment = Math.max(0.5, Math.min(2.0, priceAdjustment));
+
+    return selectedMessage;
 }
 
 bottleButton.addEventListener("click", () => {
@@ -82,7 +111,7 @@ bottleButton.addEventListener("click", () => {
         message = initialMessage;
         isFirstClick = false;
     } else {
-        message = gulfMessages[Math.floor(Math.random() * gulfMessages.length)];
+        message = getMessageAdjustment(gulfMessages);
     }
 
     createPopup(message);
@@ -92,14 +121,26 @@ bottleButton.addEventListener("click", () => {
 
 });
 
-function scheduleNextBottle() {
-    const nextAppearance = Math.random() * 5000 + 2000;
-    setTimeout(showBottleAtRandom, nextAppearance);
-}
+
 
 setTimeout(() => {
     showBottleAtRandom();
-}, 2000);
+}, 4000);
+
+function stopBottleAnimation(){
+    isBottleAnimationRunning = false;
+    clearTimeout(bottleTimeoutId);
+    bottleButton.style.transition = "none";
+    bottleButton.style.display = "none";
+}
+
+isBottleAnimationRunning = true;
+setTimeout(() => {
+    showBottleAtRandom();
+
+}, 4000);
+
+
 
 document.head.insertAdjacentHTML("beforeend", `
     <style>
