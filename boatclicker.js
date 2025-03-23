@@ -1,4 +1,5 @@
 let isFirstClick = true;
+let currentOcean = "gulf";
 
 let isBottleAnimationRunning = false;
 let bottleTimeoutId = null;
@@ -6,41 +7,33 @@ let bottleTimeoutId = null;
 const initialMessage = "Watch out for overfishing!";
 
 const gulfMessages = [
-    //Low Prices 0-2
     "U.S. Fish Market: Plentiful Supply, Low Prices.",
     "Gulf Overfishing Floods Markets: Seafood Prices Plunge To Record Lows.",
     "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Overfishing.",
 
-    //High Prices 3-5
     "Louisiana's Seafood Industry Under Duress After Four Hurricanes In Two Years",
     "Gulf Red Snapper Drought, Fishermen Face Uncertain Future.",
     "Empty Nets in the Gulf Push Seafood Prices Through the Roof"
-    
 ];
 
 const arcticMessages = [
-    //Low Prices 0-2
     "Arctic Fishery: Abundant Supply, Low Prices.",
     "Market Saturation: Arctic Overfishing Causes Seafood Price Collapse.",
     "Arctic Fishing Floods Markets, Sending Seafood Prices Plummeting.",
 
-    //High Prices 3-5
     "Less Fishing, Higher Costs: Arctic Seafood Prices Hit All-Time Highs.",
     "Arctic Fisheries Pull Back, Seafood Prices Climb to Record Levels",
     "Arctic Cod Population Booms, Fishermen Rejoice.",
 ];
 
 const medMessages = [
-    //Low Prices 0-2
     "Mediterranean Overfishing Floods Markets, Seafood Prices Dive.",
     "Too Many Nets, Too Much Catch: Overfishing in the Miditerranean Slashes Prices.",
     "Markets Drown in Mediterranean Fish as Overfishing Fuels Cheap Prices.",
 
-    //High Prices 3-5
     "Mediterranean Fisheries Pull Back, Triggering Massive Price Hikes.",
     "Low Fishing Activity in the Mediterranean Sends Prices Through the Roof",
     "Mediterranean Conservation Policies Trigger Seafood Price Surge."
-
 ];
 
 function createPopup(message) {
@@ -51,15 +44,33 @@ function createPopup(message) {
 
     const closeButton = popup.querySelector(".popup-close");
     closeButton.addEventListener("click", () => {
-        button.play(); // Play the button sound
-        popup.remove(); // Remove the popup
+        button.play();
+        popup.remove();
     });
 }
 
 
 function showRandomMessage() {
-    const randomIndex = Math.floor(Math.random() * gulfMessages.length);
-    createPopup(gulfMessages[randomIndex]);
+    let messages;
+    switch (currentOcean) {
+        case "gulf":
+            messages = gulfMessages;
+            break;
+        
+        case "med":
+            messages = medMessages;
+            break;
+
+        case "arctic":
+            messages = arcticMessages;
+            break;
+
+        default:
+            messages = gulfMessages;
+    }
+
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    createPopup(messages[randomIndex]);
 }
 function showBottleAtRandom() {
     if (!isBottleAnimationRunning) return;
@@ -77,9 +88,9 @@ function showBottleAtRandom() {
     const onTransitionEnd = () => {
         bottleButton.style.display = "none";
         if (isBottleAnimationRunning) {
-            scheduleNextBottle(); // Schedule the next appearance
+            scheduleNextBottle();
         }
-        bottleButton.removeEventListener("transitionend", onTransitionEnd); // Clean up the event listener
+        bottleButton.removeEventListener("transitionend", onTransitionEnd);
     };
 
     bottleButton.addEventListener("transitionend", onTransitionEnd);
@@ -128,14 +139,6 @@ setTimeout(() => {
     showBottleAtRandom();
 }, 4000);
 
-
-
-isBottleAnimationRunning = true;
-setTimeout(() => {
-    showBottleAtRandom();
-
-}, 4000);
-
 function stopBottleAnimation(){
     isBottleAnimationRunning = false;
     clearTimeout(bottleTimeoutId);
@@ -150,40 +153,40 @@ document.head.insertAdjacentHTML("beforeend", `
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-image: url('scroll.png'); /* Set the background image */
-        background-size: cover; /* Ensure the image covers the entire popup */
-        background-position: center; /* Center the image */
+        background-image: url('scroll.png');
+        background-size: cover;
+        background-position: center; 
         padding: 20px;
         z-index: 1000;
-        width: 500px; /* Adjust width as needed */
-        height: 210px; /* Adjust height as needed */
-        color: black; /* Set text color to contrast with the background */
-        text-align: center; /* Center the text */
+        width: 500px;
+        height: 210px;
+        color: black;
+        text-align: center; 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     .popup-message button {
-        margin: 0; /* Remove margin */
-        padding: 0; /* Remove padding */
-        background-image: url('blackbutton.png'); /* Set the button background image */
-        background-size: contain; /* Ensure the image fits within the button */
-        background-position: center; /* Center the image */
-        background-repeat: no-repeat; /* Prevent the image from repeating */
-        color: white; /* Set text color to contrast with the button */
-        border: none; /* Remove border */
+        margin: 0;
+        padding: 0;
+        background-image: url('blackbutton.png');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        border: none;
         cursor: pointer;
-        width: 90px; /* Set width to match the PNG image */
-        height: 38px; /* Set height to match the PNG image */
-        font-size: 16px; /* Adjust font size as needed */
+        width: 90px;
+        height: 38px;
+        font-size: 16px; 
         display: flex;
         background-color: transparent;
         justify-content: center;
         align-items: center;
     }
     .popup-message button:hover {
-        opacity: 0.8; /* Slightly fade the button on hover */
+        opacity: 0.8;
     }
     </style>
 `);
