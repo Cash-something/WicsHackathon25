@@ -8,12 +8,12 @@ const initialMessage = "Watch out for overfishing!";
 
 const gulfMessages = [
     "U.S. Fish Market: Plentiful Supply, Low Prices.",
-    "Gulf Overfishing Floods Markets: Seafood Prices Plunge To Record Lows.",
+    "Overfishing Floods Markets: Seafood Prices Plunge To Record Lows.",
     "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Overfishing.",
 
-    "Louisiana's Seafood Industry Under Duress After Four Hurricanes In Two Years",
-    "Gulf Red Snapper Drought, Fishermen Face Uncertain Future.",
-    "Empty Nets in the Gulf Push Seafood Prices Through the Roof"
+    "U.S. Seafood Industry Under Duress After Four Hurricanes In Two Years",
+    "Red Snapper Drought, Fishermen Face Uncertain Future.",
+    "Empty Nets in the Oceans Push Seafood Prices Through the Roof"
 ];
 
 const arcticMessages = [
@@ -51,26 +51,9 @@ function createPopup(message) {
 
 
 function showRandomMessage() {
-    let messages;
-    switch (currentOcean) {
-        case "gulf":
-            messages = gulfMessages;
-            break;
-        
-        case "med":
-            messages = medMessages;
-            break;
-
-        case "arctic":
-            messages = arcticMessages;
-            break;
-
-        default:
-            messages = gulfMessages;
-    }
 
     const randomIndex = Math.floor(Math.random() * messages.length);
-    createPopup(messages[randomIndex]);
+    createPopup(gulfMessages[randomIndex]);
 }
 function showBottleAtRandom() {
     if (!isBottleAnimationRunning) return;
