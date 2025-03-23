@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Page</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            overflow: hidden;
+            /* Prevent scrolling */
+        }
+
+        #splash-container {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, brown, burlywood);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #title {
+            text-align: center;
+            font-size: 48px;
+            color: white;
+            margin-bottom: 40px;
+            opacity: 1;
+            position: relative;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            background-color: gray;
+            border: 5px solid white;
+            border-radius: 10px;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s, opacity 0.5s ease;
+            opacity: 1;
+            position: relative;
+        }
+
+        .button:hover {
+            background-color: darkgray;
+            transform: scale(1.05);
+        }
+
+        .button:active {
+            background-color: lightgray;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
+        }
+
+        #character-selection {
+            width: 400px;
+            height: 500px;
+            background-color: white;
+            border: 5px solid black;
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #name-prompt {
+            font-size: 24px;
+            /* Larger text */
+            font-weight: bold;
+            margin: 0;
+            /* Removed all margins */
+            padding: 0;
+            /* Removed all paddings */
+        }
+
+        #name-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid gray;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px 0 0 0;
+            /* Minimal margin on top */
+        }
+
+        .character-button {
+            width: 50px;
+            height: 50px;
+            background-color: lightgray;
+            border: 2px solid darkgray;
+            border-radius: 10px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .character-button:hover {
+            background-color: gray;
+        }
+
+        .character-display {
+            width: 100px;
+            height: 100px;
+            background-color: burlywood;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+
+        .red-button {
+            background-color: red;
+        }
+
+        .red-button:hover {
+            background-color: darkred;
+        }
+
+        .controls-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #next-button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="splash-container">
+        <h1 id="title">Game Name Placeholder</h1>
+        <a id="startButton" class="button">Start</a>
+    </div>
+
+    <!-- Character selection pop-up -->
+    <div id="character-selection">
+        <div id="name-prompt">Enter a Name For Your Business</div>
+        <input id="name-input" type="text" placeholder="Enter Your Name" />
+        <div class="controls-container">
+            <button class="character-button">←</button>
+            <div class="character-display">[PNG]</div>
+            <button class="character-button">→</button>
+        </div>
+        <a id="next-button" class="button red-button" href="index.html">Next</a>
+    </div>
+
+    <script>
+        const startButton = document.getElementById("startButton");
+        const title = document.getElementById("title");
+        const splashContainer = document.getElementById("splash-container");
+        const characterSelection = document.getElementById("character-selection");
+
+        startButton.addEventListener("click", () => {
+            title.style.opacity = "0";
+            startButton.style.opacity = "0";
+
+            setTimeout(() => {
+                title.style.display = "none";
+                startButton.style.display = "none";
+
+                characterSelection.style.display = "flex";
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>
