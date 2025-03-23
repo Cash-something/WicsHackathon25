@@ -9,32 +9,112 @@ body {
     font-family: myFirstFont;
     position: relative;
 }
+#captain {
+    z-index: -1;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: 80px;
+}
+#tyler {
+    z-index: -1;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: -50px;
+}
 #game-container {
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to bottom, skyblue, deepskyblue);
     position: relative;
 }
+
+
+#background {
+    width:100%;
+    height:60%;
+    top: 0;
+}
+
+
+
 #ocean {
     position: absolute;
     bottom: 30%;
     width: 100%;
     height: 20%;
-    background: blue;
+    background: transparent;
+    animation: sway-up-down 2s infinite ease-in-out;
 }
-#boat {
-    position: absolute;
-    bottom: 35%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 50px;
-    background: brown;
-    border-radius: 10px;
+
+@keyframes sway-up-down {
+    0%, 100% {
+        transform: translate(0px, 0px);
+    }
+    50%{
+        transform: translate(2px, -2px);
+    }
 }
+#wave1{
+    width: 100%;
+    height: 110%;
+    
+}
+#game-over{
+    width:270px;
+    height:200px;
+    position:absolute;
+    background-image:url(FishPrompt.png);
+    top: 35%;
+    right: 39%;
+    text-align: center;
+    color:white;
+}
+#loseMessage{
+    font-family: myFirstFont;
+    color: white;
+    font-size: 15px;
+    position: relative;
+    top: 30px;
+}
+#restart-button {
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(TextHolder.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position:  relative;
+    top: 30px;
+}
+
 #money {
     position: absolute;
     top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+}
+#sell-button {
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(BUY.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+#price-multiplier {
+    position: absolute;
+    top: 100px;
     left: 10px;
     font-size: 20px;
     color: white;
@@ -45,6 +125,19 @@ body {
     left: 10px;
     font-size: 20px;
     color: white;
+}
+#fish-to-sell{
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(TextHolder.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    outline: none;
 }
 #quantityText {
     position: absolute;
@@ -77,19 +170,42 @@ body {
     height: 20%;
     background: black;
 }
+#bottleButton {
+    position: absolute;
+    top: calc(50% + 40px); /* Moves the button down by 10 pixels */
+    transform: translateY(-50%);
+    transform: rotate(-45deg);
+    background: url('bottle1.png') no-repeat center center;
+    background-size: contain;
+    width: 70px;
+    height: 70px;
+    border: none;
+    display: none;
+    transition: left 5s linear;
+    z-index: 3;
+}
 #sell-fish-popup{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
+    background-image: url(FishPrompt.png);
+    background-repeat: no-repeat;
+    background-size: contain;       
+    background-position: center;
     padding: 20px;
     border-radius: 10px;
+    height: 200px;
+    width: 267px;
     color: white;
     text-align: center;
     display: none;
     z-index: 10;
 }
+#sell-fish-popup p:nth-of-type(2) {
+    position: relative;
+    top: -30px; /* Move the text 5 pixels up */
+  }
 #sell-fish-popup input {
     padding: 5px;
     font-size: 16px;
@@ -160,6 +276,20 @@ body {
 }
 #hireText {
     font-size: 15px;
+    font-family: myFirstFont;
+    color: white;
+    
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
+}
+#boat-button{
+    font-family: myFirstFont;
+    color: white;
+    font-size: 12px;
+}
+#upgrText {
+    font-size: 1px;
     font-family: myFirstFont;
     color: white;
     
@@ -253,15 +383,17 @@ body {
 }
 #incrementButton {
     position: absolute;
-    bottom: 35%;
-    left: 45%;
+    bottom: 30%;
+    left:50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 50px;
-    background: brown;
-    border-radius: 10px;
-    z-index: 1;
+    background: transparent;   
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border: none;
+    z-index: 0;
     animation: sway 2s infinite ease-in-out;
+    cursor:pointer;
 }
 
 #ocean-choice-popup {

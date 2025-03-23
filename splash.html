@@ -201,9 +201,15 @@
 </head>
 
 <body>
+    <audio id="splashMusic" loop>
+        <source src="splashMusic.wav" type="audio/wav">
+    </audio>
     <div id="splash-container">
-        <h1 id="title">Fishy Business</h1>
-        <a id="startButton" class="button">Fish!</a>
+
+        <h1 id="title">Game Name Placeholder</h1>
+        <a id="startButton" class="button">Start</a>
+        <button id="playMusicButton">Play Music</button>
+
     </div>
 
     <!-- Character selection pop-up -->
@@ -223,6 +229,16 @@
     </div>
 
     <script>
+        window.onload = function () {
+            const splashMusic = document.getElementById("splashMusic");
+            const playMusicButton = document.getElementById("playMusicButton");
+
+            playMusicButton.addEventListener("click", () => {
+                splashMusic.play();
+                playMusicButton.style.display = "none";
+            });
+        };
+
         const startButton = document.getElementById("startButton");
         const title = document.getElementById("title");
         const splashContainer = document.getElementById("splash-container");
