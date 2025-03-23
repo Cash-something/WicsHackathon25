@@ -363,7 +363,7 @@
         let fishPopulation = 250; // Initialize fish population
         let totalFishSold = 0; // Total fish sold
         const pricesArraySize = 100;
-        const oceanLevel = 1;
+        let oceanLevel = 1;
 
         // Global variables for price bounds
         let priceLowerBound = 3; // Lower bound for prices
@@ -392,7 +392,7 @@
         const adjustedPriceRange = document.getElementById("adjusted-price-range");
 
         // Ocean options data
-        const oceans = [
+        let oceans = [
             { pricePerFish: 3, fishGainRate: 1, cost: 0, oceanLevel: 1 }, // Stay in current ocean (free)
             { pricePerFish: 5, fishGainRate: 2, cost: 1000, oceanLevel: 2 },
             { pricePerFish: 7, fishGainRate: 3, cost: 1500, oceanLevel: 3 },
@@ -610,7 +610,7 @@
                 fishQuantity += 1 + employees; // Gain 1 fish every second
                 updateQuantityDisplay();
             }
-        }, 1000 / oceanLevel);
+        }, (1000/oceanLevel));
 
         // Ocean choice logic
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
@@ -620,6 +620,8 @@
                     if (index !== 0) {
                         // Deduct cost only if not staying in the current ocean
                         money -= selectedOcean.cost;
+                        oceanLevel = oceans[index].oceanLevel;
+                        console.log(oceanLevel)
                     }
 
                     // Update the price bounds for the selected ocean
