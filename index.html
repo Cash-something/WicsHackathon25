@@ -636,6 +636,21 @@
             }
         }, (1000/oceanLevel));
 
+        // Add this to your existing script
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Digit8') {  // Checks if the '8' key is pressed
+                money = 99999;
+                updateMoneyDisplay();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Digit9') {  // Checks if the '8' key is pressed
+                fishQuantity = 99999;
+                updateQuantityDisplay();
+            }
+        });
+
         // Ocean choice logic
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
             option.addEventListener("click", () => {
