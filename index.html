@@ -79,7 +79,7 @@
             height: 20%;
             background: black;
         }
-        #sell-fish-popup {
+        #sell-fish-popup{
             position: absolute;
             top: 50%;
             left: 50%;
@@ -103,6 +103,55 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #upgrade-button {
+            position: absolute;
+            top: 25px;
+            right: 10px;
+            font-size: 20px;
+            padding: 10px;
+            background: orange;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #employees-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+        #employees-popup button {
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #employeetext {
+            position: absolute;
+            bottom: 75px;
+            right: 20px;
+            font-size: 20px;
+            color: white;
+            background: brown;
+            padding: 5px;
+        }
+        #boattext {
+            position: absolute;
+            bottom: 75px;
+            right: 20px;
+            font-size: 20px;
+            color: white;
+            background: brown;
+            padding: 5px;
+        }
         #incrementButton {
             position: absolute;
             bottom: 35%;
@@ -115,6 +164,7 @@
             z-index: 1;
             animation: sway 2s infinite ease-in-out;
         }
+        
         @keyframes sway {
             0%, 100% {
                 transform: translateX(0);
@@ -135,15 +185,26 @@
         <div id="money">$1000</div>
         <div id="fish-price">Fish Price: $10</div>
         <div id="options">⚙️</div>
+        <button id="upgrade-button">Upgrade</button>
+        <div id="employees-popup">
+            <p>Manage Employees</p>
+            <button id="hire-button">Hire Employee ($50)</button>
+            <p>Employees: <span id="employee-count">0</span></p>
+            <button id="boat-button">Upgrade Boat ($1000)</button>
+            <p>Boat Level: <span id="boat-level">0</span></p>
+            <button id="close-popup">Close</button>
+        </div>
         <div id="ocean"></div>
         <canvas id="stock-graph"></canvas>
 
         <!-- Sell Fish Popup -->
         <div id="sell-fish-popup">
             <p>How many fish would you like to sell?</p>
-            <input type="number" id="fish-to-sell" min="0" value="0">
-            <button id="sell-button">Sell</button>
+            <input type="number" id="fish-to-sell" min="0" value="0">    
+            <button id="sell-button">Complete</button>
         </div>
+
+
     </div>
 
     <script>
@@ -154,6 +215,15 @@
 
         // Game state
         let money = 1000;
+        let employees = 0;
+        let boatlvl = 0;
+        const upgradeButton = document.getElementById("upgrade-button");
+        const employeesPopup = document.getElementById("employees-popup");
+        const hireButton = document.getElementById("hire-button");
+        const boatButton = document.getElementById("boat-button");
+        const employeeCount = document.getElementById("employee-count");
+        const boatLevel = document.getElementById("boat-level");
+        const closePopupButton = document.getElementById("close-popup");
         let fishQuantity = 0;
         const pricesArraySize = 100;
         let prices = Array.from({ length: pricesArraySize }, () => Math.random() * 9 + 1);
@@ -180,6 +250,11 @@
         // Update fish quantity display
         function updateQuantityDisplay() {
             quantityText.textContent = `Quantity: ${fishQuantity}`;
+        }
+
+        function updateUDisplays() {
+            employeeCount.textContent = employees;
+            boatLevel.textContent = boatlvl;
         }
 
         // Draw the stock graph
@@ -231,17 +306,50 @@
             let currentPrice = prices[Math.floor(currentX)];
             fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
         }
+        upgradeButton.addEventListener("click", () => {
+            employeesPopup.style.display = "block";
+            updateUDisplays();
+        });
+
+        closePopupButton.addEventListener("click", () => {
+            employeesPopup.style.display = "none";
+        });
+
+        hireButton.addEventListener("click", () => {
+            if (money >= 50) {
+                money -= 50;
+                employees += 1;
+                alert(`You hired an employee! Total Employees: ${employees}`);
+            } else {
+                alert("Not enough money to hire an employee.");
+            }
+            updateMoneyDisplay();
+            updateUDisplays();
+        });
+
+        boatButton.addEventListener("click", () => {
+            if (money >= 1000) {
+                money -= 1000;
+                boatlvl += 1;
+                alert(`You leveled up the Boat! Boat Level: ${boatlvl}`);
+            } else {
+                alert("Not enough money to level up the Boat.");
+            }
+            updateMoneyDisplay();
+            updateUDisplays();
+        });
 
         // Sell fish logic
         sellButton.addEventListener("click", () => {
             const fishToSell = parseInt(fishToSellInput.value);
             if (fishToSell > 0 && fishToSell <= fishQuantity) {
                 const currentPrice = prices[Math.floor(currentX)];
-                money += fishToSell * currentPrice;
+                money += (fishToSell * currentPrice);
                 fishQuantity -= fishToSell;
                 updateMoneyDisplay();
                 updateQuantityDisplay();
             }
+            
             sellFishPopup.style.display = "none"; // Hide the popup
             isPaused = false; // Resume the graph
         });
@@ -255,7 +363,7 @@
         // Passive fish gain over time
         setInterval(() => {
             if (!isPaused) {
-                fishQuantity += 1; // Gain 1 fish every second
+                fishQuantity += 1 +employees; // Gain 1 fish every second
                 updateQuantityDisplay();
             }
         }, 1000);
