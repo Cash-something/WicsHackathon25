@@ -28,11 +28,14 @@ body {
     height: 100vh;
     position: relative;
 }
+
+
 #background {
     width:100%;
     height:60%;
     top: 0;
 }
+
 
 
 #ocean {
@@ -47,16 +50,38 @@ body {
     height: 110%;
     
 }
-#boat {
-    position: absolute;
-    bottom: 35%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 50px;
-    background: brown;
-    border-radius: 10px;
+#game-over{
+    width:270px;
+    height:200px;
+    position:absolute;
+    background-image:url(FishPrompt.png);
+    top: 35%;
+    right: 39%;
+    text-align: center;
+    color:white;
 }
+#loseMessage{
+    font-family: myFirstFont;
+    color: white;
+    font-size: 15px;
+    position: relative;
+    top: 30px;
+}
+#restart-button {
+    font-family: myFirstFont;
+    color: white;
+    height: 70px;
+    width: 120px;
+    border: none;
+    background: transparent;
+    background-image: url(TextHolder.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position:  relative;
+    top: 30px;
+}
+
 #money {
     position: absolute;
     top: 10px;
@@ -236,7 +261,7 @@ body {
     font-size: 12px;
 }
 #upgrText {
-    font-size: 12px;
+    font-size: 1px;
     font-family: myFirstFont;
     color: white;
     

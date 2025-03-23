@@ -84,7 +84,6 @@
             <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>
 
 
-
             <button id="sell-button">Complete</button>
         </div>
 
@@ -94,8 +93,8 @@
             <button id="close-over-capacity">Close</button>
         </div>
 
-        <div id="game-over-popup">
-            <p>You've lost the game!</p>
+        <div id="game-over" style="opacity: 0;">
+            <p id="loseMessage">You've lost the game!</p>
             <button id="restart-button">Restart Game</button>
         </div>
 
@@ -213,9 +212,11 @@
         // Function to check if the ship should sink
         function checkIfShipSinks() {
             if (money < 0) {
+                isPaused = true;
                 horn.play();
                 incrementButton.style.display = "none"; // Hide the ship
-                stopGame(); // Stop the game
+                stopGame();
+                
                 stopBottleAnimation();
                 showGameOverPopup();
             }
@@ -233,7 +234,8 @@
         }
 
         function showGameOverPopup() {
-            const gameOverPopup = document.getElementById("game-over-popup");
+            const gameOverPopup = document.getElementById("game-over");
+            document.getElementById("game-over").style.opacity = "1"; // Fade in the popup
             gameOverPopup.style.display = "block"; // Show the popup
         }
 
@@ -375,6 +377,7 @@
             button.play();
             employeesPopup.style.display = "none";
             isPaused = false;
+            console.log(isPaused)
         });
 
         hireButton.addEventListener("click", () => {
@@ -458,7 +461,11 @@
             updateMultiplier();
 
             sellFishPopup.style.display = "none"; // Hide the popup
-            isPaused = false; // Resume the graph
+            
+            isPaused = false;
+            if (money < 0) {
+                isPaused = true;
+            } // Resume the graph
         });
 
         document.getElementById("close-over-capacity").addEventListener("click", () => {
