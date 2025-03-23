@@ -48,12 +48,14 @@ function createPopup(message) {
     popup.className = "popup-message";
     popup.innerHTML = `<p>${message}</p><button class="popup-close">Close</button>`;
     document.body.appendChild(popup);
-    popup.querySelector(".popup-close").addEventListener("click", () => popup.remove());
+
+    const closeButton = popup.querySelector(".popup-close");
+    closeButton.addEventListener("click", () => {
+        button.play(); // Play the button sound
+        popup.remove(); // Remove the popup
+    });
 }
 
-function closePopup(button) {
-    document.body.removeChild(button.parentElement);
-}
 
 function showRandomMessage() {
     const randomIndex = Math.floor(Math.random() * gulfMessages.length);
@@ -106,6 +108,7 @@ function getMessageAdjustment(messages) {
 
 bottleButton.addEventListener("click", () => {
     let message;
+    bottle.play();
     if (isFirstClick) {
         message = initialMessage;
         isFirstClick = false;

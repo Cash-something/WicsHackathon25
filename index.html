@@ -11,6 +11,35 @@
 
 <body>
 
+    <audio id="backgroundMusic" loop>
+        <source src="backgroundMusic.wav" type="audio/wav">
+    </audio>
+    <audio id="bell">
+        <source src="bell.wav" type="audio/wav">
+    </audio>
+    <audio id="bottle">
+        <source src="bottle.wav" type="audio/wav">
+    </audio>
+    <audio id="button">
+        <source src="button.wav" type="audio/wav">
+    </audio>
+    <audio id="horn">
+        <source src="horn.wav" type="audio/wav">
+    </audio>
+    <audio id="register">
+        <source src="register.wav" type="audio/wav">
+    </audio>
+    <audio id="bubble1">
+        <source src="bubble1.wav" type="audio/wav">
+    </audio>
+    <audio id="bubble2">
+        <source src="bubble2.wav" type="audio/wav">
+    </audio>
+    <audio id="bubble3">
+        <source src="bubble3.wav" type="audio/wav">
+    </audio>
+
+
     <div id="game-container">
 
         <img id="background" src="Gulf.png" alt="Background Image" >
@@ -97,6 +126,10 @@
     </div>
     <script src="boatclicker.js"></script>
     <script>
+        window.onload = function() {
+            const backgroundMusic = document.getElementById("backgroundMusic");
+            backgroundMusic.play();
+        };
 
         const canvas = document.getElementById("stock-graph");
         const ctx = canvas.getContext("2d");
@@ -154,6 +187,12 @@
         const incrementButton = document.getElementById("incrementButton");
         const oceanChoicePopup = document.getElementById("ocean-choice-popup");
         const adjustedPriceRange = document.getElementById("adjusted-price-range");
+      
+        const bell = document.getElementById("bell");
+        const bottle = document.getElementById("bottle");
+        const button = document.getElementById("button");
+        const register = document.getElementById("register");
+
 
         // Oceans info
         const oceans = [
@@ -174,6 +213,7 @@
         // Function to check if the ship should sink
         function checkIfShipSinks() {
             if (money < 0) {
+                horn.play();
                 incrementButton.style.display = "none"; // Hide the ship
                 stopGame(); // Stop the game
                 stopBottleAnimation();
@@ -302,9 +342,12 @@
 
             
             if (currentX === 25 || currentX === 75) {
-
+                openSellPopup();
+                bell.volume = 0.6;
+                bell.play();
                 isPaused = true;
                 sellFishPopup.style.display = "block"; 
+
 
             }
 
@@ -319,6 +362,7 @@
         }
 
         upgradeButton.addEventListener("click", () => {
+            button.play();
             isPaused = true;
             employeesPopup.style.display = "block";
 
@@ -328,6 +372,7 @@
         });
 
         closePopupButton.addEventListener("click", () => {
+            button.play();
             employeesPopup.style.display = "none";
             isPaused = false;
         });
@@ -336,6 +381,7 @@
             if (money >= 50) {
                 money -= 50;
                 employees += 1;
+                register.play();
                 alert(`You hired an employee! Total Employees: ${employees}`);
             } else {
                 alert("Not enough money to hire an employee.");
@@ -349,6 +395,7 @@
                 money -= 1000;
                 boatlvl += 1;
                 capacity += 100;
+                register.play();
                 alert(`You leveled up the Boat! Boat Level: ${boatlvl}`);
             } else {
                 alert("Not enough money to level up the Boat.");
@@ -402,6 +449,8 @@
 
                 }
             }
+            const register = document.getElementById("register");
+            register.play();
 
 
             updateMoneyDisplay(); // Update money display
@@ -413,15 +462,29 @@
         });
 
         document.getElementById("close-over-capacity").addEventListener("click", () => {
+            button.play();
             document.getElementById("over-capacity").style.display = "none";
         });
 
+        function randomBubble() {
+            const bubbleSounds = [
+                document.getElementById("bubble1"),
+                document.getElementById("bubble2"),
+                document.getElementById("bubble3")
+            ];
+
+            const randomIndex = Math.floor(Math.random() * bubbleSounds.length);
+            const selectedSound = bubbleSounds[randomIndex];
+
+            selectedSound.play();
+        }
         // Increment fish quantity on button click
 
         incrementButton.addEventListener("click", () => {
             if (fishQuantity < capacity) {
                 fishQuantity += 1;
                 updateQuantityDisplay();
+                randomBubble();
             }
 
         });
@@ -454,6 +517,7 @@
         // choose ocean
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
             option.addEventListener("click", () => {
+                button.play();
                 const selectedOcean = oceans[index];
                 if (money >= selectedOcean.cost) {
                     if (index !== 0) {
@@ -467,6 +531,7 @@
                         }
                         money -= selectedOcean.cost;
                     }
+                    priceAdjustment = 100;
                     priceLowerBound = selectedOcean.pricePerFish;
                     priceUpperBound = selectedOcean.pricePerFish + 3; 
                     fishPopulation = 250; 
