@@ -222,6 +222,8 @@
 </head>
 
 <body>
+    <audio id="splashMusic" src="splashMusic.wav"></audio>
+
     <div id="splash-container">
         <h1 id="title">Fishy Business</h1>
         <a id="startButton" class="button">GO FISH</a>
@@ -261,6 +263,13 @@
         ];
 
         let currentImageIndex = 0;
+
+        document.addEventListener("keydown", function(event) {
+            if(event.key === "0") {
+                const splashMusic = document.getElementById("splashMusic");
+                splashMusic.play();
+            }
+        });
 
         leftButton.addEventListener("click", () => {
             currentImageIndex = (currentImageIndex - 1 + characterImages.length) % characterImages.length;

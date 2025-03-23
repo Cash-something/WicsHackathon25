@@ -54,7 +54,7 @@
         <div class="status-container">
             <div id="price-multiplier">Price Multiplier: 100%</div>
             <div id="money">$1000</div>
-            <span id="quantityText">Quantity: 0</span>
+            <span id="quantityText">Quantity: <span id="currentQuantity">0</span> / <span id="capacity">200</span></span>
             <div id="fish-price">Fish Price: $10</div>
         </div>
         <button id="upgrade-button" >
@@ -249,11 +249,9 @@
             location.reload(); 
         });
 
-        // Update fish quantity display
         function updateQuantityDisplay() {
-            quantityText.textContent = `Quantity: ${fishQuantity}`;
-            /*document.getElementById("currentQuantity").textContent = fishQuantity;
-            document.getElementById("capacity").textContent = capacity;*/
+            document.getElementById("currentQuantity").textContent = fishQuantity;
+            document.getElementById("capacity").textContent = capacity;
         }
 
         function updateUDisplays() {
@@ -424,7 +422,6 @@
             sellingPoint = { x: currentX };
         }
 
-        // sell fish
         sellButton.addEventListener("click", () => {
             const fishToSell = parseInt(fishToSellInput.value);
             if (fishToSell > fishQuantity) {
@@ -437,7 +434,6 @@
             let boatFee = boatlvl * 100;
             let employeeFee = employees * 30;
 
-            // Deduct fees even if no fish are sold
             money -= boatFee;
             money -= employeeFee;
 
