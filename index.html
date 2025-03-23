@@ -43,14 +43,14 @@
         </div>
         <canvas id="stock-graph"></canvas>
 
-        <!-- Sell Fish Popup -->
+       
         <div id="sell-fish-popup">
             <p>How many fish would you like to sell?</p>
             <input type="number" id="fish-to-sell" min="0" value="0">    
             <button id="sell-button">Complete</button>
         </div>
 
-        <!-- Ocean Choice Popup -->
+        
         <div id="ocean-choice-popup">
             <p>Choose an ocean:</p>
             <div class="ocean-option" id="ocean-option-1">
@@ -81,7 +81,7 @@
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
-        // Game state
+        //state variables
         let money = 1000;
         let employees = 0;
         let boatlvl = 0;
@@ -93,15 +93,15 @@
         const boatLevel = document.getElementById("boat-level");
         const closePopupButton = document.getElementById("close-popup");
         let fishQuantity = 0;
-        let fishPopulation = 250; // Initialize fish population
-        let totalFishSold = 0; // Total fish sold
+        let fishPopulation = 250; 
+        let totalFishSold = 0; 
         const pricesArraySize = 100;
 
-        // Global variables for price bounds
-        let priceLowerBound = 3; // Lower bound for prices
-        let priceUpperBound = 6; // Upper bound for prices
+        // global variables for prices
+        let priceLowerBound = 3; 
+        let priceUpperBound = 6; 
 
-        // Initialize prices array with values between priceLowerBound and priceUpperBound
+        // initialize prices array with values between priceLowerBound and priceUpperBound
         let prices = Array.from({ length: pricesArraySize }, () => 
             Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
         );
@@ -110,7 +110,7 @@
         let isPaused = false;
         let priceAdjustment = 1; // Initialize price adjustment factor
 
-        // DOM elements
+        //imports from html
         const fishPriceElement = document.getElementById("fish-price");
         const moneyElement = document.getElementById("money");
         const quantityText = document.getElementById("quantityText");
@@ -121,22 +121,22 @@
         const oceanChoicePopup = document.getElementById("ocean-choice-popup");
         const adjustedPriceRange = document.getElementById("adjusted-price-range");
 
-        // Ocean options data
+        // Oceans info
         const oceans = [
             { pricePerFish: 3, fishGainRate: 1, cost: 0 }, // Stay in current ocean (free)
             { pricePerFish: 5, fishGainRate: 2, cost: 1000 },
             { pricePerFish: 7, fishGainRate: 3, cost: 1500 }
         ];
 
-        // Calculate the horizontal scaling factor
+       
         const xScale = canvas.width / (pricesArraySize - 1);
 
-        // Update money display
+       
         function updateMoneyDisplay() {
             moneyElement.textContent = `$${money.toFixed(2)}`;
         }
 
-        // Update fish quantity display
+        
         function updateQuantityDisplay() {
             quantityText.textContent = `Quantity: ${fishQuantity}`;
         }
@@ -151,7 +151,7 @@
 
         }
 
-        // Draw the stock graph
+        
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const verticalOffset = 47;
@@ -170,8 +170,6 @@
             
         }
         
-
-        // Draw the current price line
         function drawCurrentPriceLine() {
             let scaledX = currentX * xScale;
             ctx.strokeStyle = "#7ddd3e";
@@ -181,36 +179,35 @@
             ctx.stroke();
         }
 
-        // Update the graph and check for pause points
         function updateGraph() {
             if (isPaused) return;
 
             if (currentX < pricesArraySize) {
                 currentX += 1;
             } else {
-                // End of the graph reached
-                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // Update price adjustment
+                // end of the graph reached
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // update price
                 const adjustedPriceMin = priceLowerBound * priceAdjustment;
                 const adjustedPriceMax = priceUpperBound * priceAdjustment;
 
-                // Update the adjusted price range in the ocean choice popup
+                
                 adjustedPriceRange.textContent = `$${adjustedPriceMin.toFixed(2)} - ${adjustedPriceMax.toFixed(2)}`;
 
-                // Show the ocean choice popup
+                
                 oceanChoicePopup.style.display = "block";
                 isPaused = true;
 
-                // Reset currentX and regenerate prices
+                
                 currentX = 0;
                 prices = Array.from({ length: pricesArraySize }, () => 
                     Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound
                 );
             }
 
-            // Check if currentX reaches 25% or 75% of the array size
+            
             if (currentX === 25 || currentX === 75) {
                 isPaused = true;
-                sellFishPopup.style.display = "block"; // Show the sell fish popup
+                sellFishPopup.style.display = "block"; 
             }
 
             drawGraph();
@@ -220,13 +217,13 @@
         }
         upgradeButton.addEventListener("click", () => {
             employeesPopup.style.display = "block";
-            isPaused = true; // Pause the graph
+            isPaused = true; 
             updateUDisplays();
         });
 
         closePopupButton.addEventListener("click", () => {
             employeesPopup.style.display = "none";
-            isPaused = false; // Resume the graph
+            isPaused = false;
         });
 
         hireButton.addEventListener("click", () => {
@@ -253,36 +250,36 @@
             updateUDisplays();
         });
 
-        // Sell fish logic
+        // sell fish
         sellButton.addEventListener("click", () => {
             const fishToSell = parseInt(fishToSellInput.value);
             if (fishToSell > 0 && fishToSell <= fishQuantity) {
                 const currentPrice = prices[Math.floor(currentX)];
                 money += (fishToSell * currentPrice);
                 fishQuantity -= fishToSell;
-                totalFishSold += fishToSell; // Update total fish sold
+                totalFishSold += fishToSell; // 
 
-                // Update prices after currentX
+                
                 priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation;
                 for (let i = currentX; i < pricesArraySize; i++) {
-                    prices[i] = priceAdjustment * prices[i]; // Scale to fit the graph
+                    prices[i] = priceAdjustment * prices[i]; 
                 }
 
                 updateMoneyDisplay();
                 updateQuantityDisplay();
             }
             
-            sellFishPopup.style.display = "none"; // Hide the popup
-            isPaused = false; // Resume the graph
+            sellFishPopup.style.display = "none"; 
+            isPaused = false; 
         });
 
-        // Increment fish quantity on button click
+        // clicker function
         incrementButton.addEventListener("click", () => {
             fishQuantity += 1;
             updateQuantityDisplay();
         });
 
-        // Passive fish gain over time
+        // passive gain
         setInterval(() => {
             if (!isPaused) {
                 fishQuantity += 1 +employees; // Gain 1 fish every second
@@ -290,13 +287,13 @@
             }
         }, 1000);
 
-        // Ocean choice logic
+        // choose ocean
         document.querySelectorAll(".ocean-option").forEach((option, index) => {
             option.addEventListener("click", () => {
                 const selectedOcean = oceans[index];
                 if (money >= selectedOcean.cost) {
                     if (index !== 0) {
-                        // Deduct cost only if not staying in the current ocean
+                        //pay the piper if ur movin
                         if (index == 1) {
                         document.getElementById("background").src = 'Med.png'; 
                         
@@ -307,11 +304,11 @@
                         money -= selectedOcean.cost;
                     }
                     priceLowerBound = selectedOcean.pricePerFish;
-                    priceUpperBound = selectedOcean.pricePerFish + 3; // Adjust upper bound
-                    fishPopulation = 250; // Reset fish population
-                    totalFishSold = 0; // Reset total fish sold
+                    priceUpperBound = selectedOcean.pricePerFish + 3; 
+                    fishPopulation = 250; 
+                    totalFishSold = 0; 
 
-                    // Apply price adjustment if staying in the current ocean
+                    
                     if (index === 0) {
                         for (let i = 0; i < pricesArraySize; i++) {
                             prices[i] = priceAdjustment * (Math.random() * (priceUpperBound - priceLowerBound) + priceLowerBound);
@@ -327,14 +324,13 @@
             });
         });
 
-        // Initialize displays
+        // init displays
         updateMoneyDisplay();
         updateQuantityDisplay();
-
-        // Start the graph update loop
         drawGraph();
         drawCurrentPriceLine();
         setInterval(updateGraph, 100);
+        
     </script>
 </body>
 </html>
