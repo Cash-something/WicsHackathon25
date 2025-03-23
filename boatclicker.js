@@ -40,9 +40,21 @@ const medMessages = [
 
 ];
 
+function createPopup(message) {
+    let popup = document.createElement("div");
+    popup.className = "popup-message";
+    popup.innerHTML = `<p>${message}</p><button class="popup-close">Close</button>`;
+    document.body.appendChild(popup);
+    popup.querySelector(".popup-close").addEventListener("click", () => popup.remove());
+}
+
+function closePopup(button) {
+    document.body.removeChild(button.parentElement);
+}
+
 function showRandomMessage() {
     const randomIndex = Math.floor(Math.random() * gulfMessages.length);
-    alert(gulfMessages[randomIndex]);
+    createPopup(gulfMessages[randomIndex]);
 }
 function showBottleAtRandom() {
     bottleButton.style.display = "block";
@@ -73,7 +85,7 @@ bottleButton.addEventListener("click", () => {
         message = gulfMessages[Math.floor(Math.random() * gulfMessages.length)];
     }
 
-    alert(message);
+    createPopup(message);
     bottleButton.style.transition = "none";
     bottleButton.style.display = "none";
     scheduleNextBottle();
@@ -88,3 +100,31 @@ function scheduleNextBottle() {
 setTimeout(() => {
     showBottleAtRandom();
 }, 2000);
+
+document.head.insertAdjacentHTML("beforeend", `
+    <style>
+    .popup-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        z-index: 1000;
+    }
+    .popup-message button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .popup-message button:hover {
+        background: #0056b3;
+    }
+    </style>
+    `);
+    
