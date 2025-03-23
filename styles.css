@@ -171,14 +171,14 @@ body {
     background: black;
 }
 #bottleButton {
-    position:absolute;
-    top:50%;
+    position: absolute;
+    top: calc(50% + 40px); /* Moves the button down by 10 pixels */
     transform: translateY(-50%);
     transform: rotate(-45deg);
-    background: url('bottle.png') no-repeat center center;
+    background: url('bottle1.png') no-repeat center center;
     background-size: contain;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border: none;
     display: none;
     transition: left 5s linear;
