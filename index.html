@@ -225,6 +225,30 @@
             z-index: 1;
         }
 
+        #game-over-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 20;
+        }
+
+        #game-over-popup button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: orange;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
         @keyframes sway {
 
             0%,
@@ -270,6 +294,16 @@
             <button id="sell-button">Complete</button>
         </div>
 
+        <button id="decrement-money-button" style="position: absolute; top: 100px; left: 10px; font-size: 20px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
+            Lose $20
+        </button>
+
+        
+        <div id="game-over-popup">
+            <p>You've lost the game!</p>
+            <button id="restart-button">Restart Game</button>
+        </div>
+
         <!-- Ocean Choice Popup -->
         <div id="ocean-choice-popup">
             <p>Choose an ocean:</p>
@@ -301,7 +335,7 @@
         canvas.height = canvas.offsetHeight;
 
         // Game state
-        let money = 1000;
+        let money = 10;
         let employees = 0;
         let boatlvl = 0;
         const upgradeButton = document.getElementById("upgrade-button");
@@ -353,7 +387,40 @@
         // Update money display
         function updateMoneyDisplay() {
             moneyElement.textContent = `$${money.toFixed(2)}`;
+            checkIfShipSinks(); // Check if the ship should sink
         }
+
+        // Function to check if the ship should sink
+        function checkIfShipSinks() {
+            if (money < 0) {
+                incrementButton.style.display = "none"; // Hide the ship
+                stopGame(); // Stop the game
+                showGameOverPopup();
+            }
+        }
+
+        function stopGame() {
+            clearInterval(fishGainInterval); // Stop the passive fish gain
+            isPaused = true; // Pause the graph and other updates
+        }
+
+        function showGameOverPopup() {
+            const gameOverPopup = document.getElementById("game-over-popup");
+            gameOverPopup.style.display = "block"; // Show the popup
+        }
+
+        
+        // Add event listener for the new decrement money button
+        const decrementMoneyButton = document.getElementById("decrement-money-button");
+        decrementMoneyButton.addEventListener("click", () => {
+            money -= 20; // Decrement money by 20
+            updateMoneyDisplay(); // Update the money display and check if the ship sinks
+        });
+
+        const restartButton = document.getElementById("restart-button");
+        restartButton.addEventListener("click", () => {
+            location.reload(); // Reload the page to restart the game
+        });
 
         // Update fish quantity display
         function updateQuantityDisplay() {
@@ -429,6 +496,7 @@
             let currentPrice = prices[Math.floor(currentX)];
             fishPriceElement.textContent = `Fish Price: $${currentPrice.toFixed(2)}`;
         }
+
         upgradeButton.addEventListener("click", () => {
             employeesPopup.style.display = "block";
             updateUDisplays();
@@ -492,7 +560,7 @@
         });
 
         // Passive fish gain over time
-        setInterval(() => {
+        let fishGainInterval = setInterval(() => {
             if (!isPaused) {
                 fishQuantity += 1 + employees; // Gain 1 fish every second
                 updateQuantityDisplay();
