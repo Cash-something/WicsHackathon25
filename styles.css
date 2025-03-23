@@ -1,0 +1,312 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url(Retro\ Gaming.ttf);
+  }
+  
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: myFirstFont;
+    position: relative;
+}
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, skyblue, deepskyblue);
+    position: relative;
+}
+#ocean {
+    position: absolute;
+    bottom: 30%;
+    width: 100%;
+    height: 20%;
+    background: blue;
+}
+#boat {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    background: brown;
+    border-radius: 10px;
+}
+#money {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+}
+#fish-price {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+}
+#quantityText {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+}
+#numberDisplay {
+    position: absolute;
+    top: 70px;
+    left: 150px;
+    font-size: 20px;
+    color: white;
+}
+#options {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+#stock-graph {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 20%;
+    background: black;
+}
+#sell-fish-popup{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    display: none;
+    z-index: 10;
+}
+#sell-fish-popup input {
+    padding: 5px;
+    font-size: 16px;
+    width: 100px;
+    margin-bottom: 10px;
+}
+#sell-fish-popup button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#upgrade-button {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    font-size: 20px;
+    padding: 10px;
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#employees-popup {
+    font-size: 12px;
+    font-family: myFirstFont;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    height: 267px;
+    width: 200px;
+    background-image: url(Group\ 1.png);
+    padding: 30px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    display: none;
+    z-index: 10;
+    background-repeat: no-repeat;
+    background-size: contain;       
+    background-position: center;
+}
+#hire-button {
+
+
+    height: 70px;
+    width: 120px;
+
+
+    background-image: url(BUY.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    border: none;
+    background-color: transparent;
+
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#hireText {
+    font-size: 15px;
+    font-family: myFirstFont;
+    color: white;
+    
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
+}
+#employee-count {
+    font-size: 15px;
+    font-family: myFirstFont;
+    color: white;
+}
+#boat-button {
+    height: 70px;
+    width: 120px;
+
+
+    background-image: url(BUY.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    border: none;
+    background-color: transparent;
+
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#close-popup {
+    height: 70px;
+    width: 120px;
+    font-family: myFirstFont;
+    color: white;
+
+
+    background-image: url(TextHolder.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    border: none;
+    background-color: transparent;
+
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#close {
+    font-size: 15px;
+    font-family: myFirstFont;
+    color: white;
+    
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
+}
+#employees-popup button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#employeetext {
+    position: absolute;
+    bottom: 75px;
+    right: 20px;
+    font-size: 20px;
+    color: white;
+    background: brown;
+    padding: 5px;
+}
+#boattext {
+    position: absolute;
+    bottom: 75px;
+    right: 20px;
+    font-size: 20px;
+    color: white;
+    background: brown;
+    padding: 5px;
+}
+#incrementButton {
+    position: absolute;
+    bottom: 35%;
+    left: 45%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    background: brown;
+    border-radius: 10px;
+    z-index: 1;
+    animation: sway 2s infinite ease-in-out;
+}
+
+#ocean-choice-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    display: none;
+    z-index: 10;
+}
+#ocean-choice-popup .ocean-option {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#ocean-choice-popup .ocean-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+#stock-graph {
+    height: 30%;
+    width: 100%;
+    background: transparent;
+    background-image: url(Sonar.png);
+    background-repeat: repeat;
+    background-position: bottom;
+    background-size: contain;
+    bottom:0%
+}
+
+
+@keyframes sway {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-3px);
+    }
+    75% {
+        transform: translateX(3px);
+    }
+}
