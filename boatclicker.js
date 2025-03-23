@@ -129,14 +129,11 @@ function stopBottleAnimation(){
     bottleButton.style.display = "none";
 }
 
-<<<<<<< HEAD
-=======
 isBottleAnimationRunning = true;
 setTimeout(() => {
     showBottleAtRandom();
 
 }, 4000);
->>>>>>> a30ce17864fc34cd52646eb7b813a1cb3c223fed
 
 
 
