@@ -66,7 +66,7 @@ function showBottleAtRandom() {
 
     bottleButton.style.display = "block";
     bottleButton.style.left = "100%";
-    bottleButton.style.top = `${55}%`;
+    bottleButton.style.top = `${60}%`;
 
     bottleButton.offsetWidth;
 

@@ -171,13 +171,14 @@ body {
     background: black;
 }
 #bottleButton {
-    position:absolute;
-    top:50%;
+    position: absolute;
+    top: calc(50% + 40px); /* Moves the button down by 10 pixels */
     transform: translateY(-50%);
-    background: url('bottle.png') no-repeat center center;
+    transform: rotate(-45deg);
+    background: url('bottle1.png') no-repeat center center;
     background-size: contain;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border: none;
     display: none;
     transition: left 5s linear;
@@ -201,6 +202,10 @@ body {
     display: none;
     z-index: 10;
 }
+#sell-fish-popup p:nth-of-type(2) {
+    position: relative;
+    top: -30px; /* Move the text 5 pixels up */
+  }
 #sell-fish-popup input {
     padding: 5px;
     font-size: 16px;
