@@ -52,22 +52,19 @@ function showBottleAtRandom() {
 
     bottleButton.style.display = "block";
     bottleButton.style.left = "100%";
-    bottleButton.style.top = '${Math.random() * 80 + 10}%';
+    bottleButton.style.top = `${55}%`;
 
     bottleButton.offsetWidth;
 
-    const animationDuration = 5000;
+    const animationDuration = 10000;
     bottleButton.style.transition = `left ${animationDuration}ms linear`;
     bottleButton.style.left = "-10%";
 
     setTimeout(() => {
-        const bottleLeft = parseFloat(bottleButton.style.left || "0");
-        if (bottleLeft <= -10) {
             bottleButton.style.display = "none";
             if (isBottleAnimationRunning) {
                 scheduleNextBottle();
             }
-        }
     }, animationDuration);
 }
 
@@ -89,7 +86,6 @@ function getMessageAdjustment(messages) {
     }
 
     priceAdjustment = Math.max(0.5, Math.min(2.0, priceAdjustment));
-
     return selectedMessage;
 }
 
@@ -109,8 +105,7 @@ bottleButton.addEventListener("click", () => {
 
 });
 
-
-
+isBottleAnimationRunning = true;
 setTimeout(() => {
     showBottleAtRandom();
 }, 4000);
@@ -122,8 +117,4 @@ function stopBottleAnimation(){
     bottleButton.style.display = "none";
 }
 
-isBottleAnimationRunning = true;
-setTimeout(() => {
-    showBottleAtRandom();
-}, 4000);
 
