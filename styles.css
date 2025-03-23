@@ -172,7 +172,7 @@ body {
 }
 #bottleButton {
     position: absolute;
-    top: calc(50% + 40px); /* Moves the button down by 10 pixels */
+    top: calc(50% + 40px);
     transform: translateY(-50%);
     transform: rotate(-45deg);
     background: url('bottle1.png') no-repeat center center;
@@ -204,7 +204,7 @@ body {
 }
 #sell-fish-popup p:nth-of-type(2) {
     position: relative;
-    top: -30px; /* Move the text 5 pixels up */
+    top: -30px; 
   }
 #sell-fish-popup input {
     padding: 5px;

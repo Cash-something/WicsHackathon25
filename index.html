@@ -103,8 +103,6 @@
             <button id="restart-button">Restart Game</button>
         </div>
 
-        <!-- Ocean Choice Popup -->
-
         <div id="ocean-choice-popup">
             <p>Choose an ocean:</p>
             <div class="ocean-option" id="ocean-option-1">
@@ -176,7 +174,7 @@
 
         let sellingPoint = null;
 
-        let priceAdjustment = 1; // Initialize price adjustment factor
+        let priceAdjustment = 1; 
 
 
         //imports from html
@@ -200,7 +198,7 @@
 
         // Oceans info
         const oceans = [
-            { pricePerFish: 3, fishGainRate: 1, cost: 0 }, // Stay in current ocean (free)
+            { pricePerFish: 3, fishGainRate: 1, cost: 0 }, 
             { pricePerFish: 5, fishGainRate: 2, cost: 1000 },
             { pricePerFish: 7, fishGainRate: 3, cost: 1500 }
         ];
@@ -211,7 +209,7 @@
        
         function updateMoneyDisplay() {
             moneyElement.textContent = `$${money.toFixed(2)}`;
-            checkIfShipSinks(); // Check if the ship should sink
+            checkIfShipSinks();
         }
 
         // Function to check if the ship should sink
@@ -219,7 +217,7 @@
             if (money < 0) {
                 isPaused = true;
                 horn.play();
-                incrementButton.style.display = "none"; // Hide the ship
+                incrementButton.style.display = "none";
                 stopGame();
                 
                 stopBottleAnimation();
@@ -234,21 +232,21 @@
         }
 
         function stopGame() {
-            clearInterval(fishGainInterval); // Stop the passive fish gain
-            isPaused = true; // Pause the graph and other updates
+            clearInterval(fishGainInterval); 
+            isPaused = true;
         }
 
         function showGameOverPopup() {
             const gameOverPopup = document.getElementById("game-over");
-            document.getElementById("game-over").style.opacity = "1"; // Fade in the popup
-            gameOverPopup.style.display = "block"; // Show the popup
+            document.getElementById("game-over").style.opacity = "1"; 
+            gameOverPopup.style.display = "block"; 
         }
 
 
 
         const restartButton = document.getElementById("restart-button");
         restartButton.addEventListener("click", () => {
-            location.reload(); // Reload the page to restart the game
+            location.reload(); 
         });
 
         // Update fish quantity display
@@ -306,11 +304,11 @@
 
 
         function drawPriceLines() {
-            const importantPoints = [25, 75]; // Always show yellow lines at these points
+            const importantPoints = [25, 75];
 
             importantPoints.forEach((point) => {
-                let scaledX = (point / 100) * canvas.width; // Convert percentage to canvas width
-                ctx.strokeStyle = "yellow"; // Set color to yellow
+                let scaledX = (point / 100) * canvas.width;
+                ctx.strokeStyle = "yellow"; 
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(scaledX, 0);
@@ -329,7 +327,7 @@
                 currentX += 1;
             } else {
                 // end of the graph reached
-                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; // update price
+                priceAdjustment = (fishPopulation - totalFishSold) / fishPopulation; 
                 const adjustedPriceMin = priceLowerBound * priceAdjustment;
                 const adjustedPriceMax = priceUpperBound * priceAdjustment;
 
@@ -359,9 +357,9 @@
 
             }
 
-            drawGraph(); // Draw the graph
-            drawCurrentPriceLine(); // Draw the current price line
-            drawPriceLines(); // Draw the price lines
+            drawGraph(); 
+            drawCurrentPriceLine(); 
+            drawPriceLines(); 
 
             let currentPrice = prices[Math.floor(currentX)];
             if (typeof currentPrice === "number") {
@@ -420,7 +418,7 @@
         }
 
         function openSellPopup() {
-            updateFeesDisplay(); // Update fees display
+            updateFeesDisplay(); 
             sellFishPopup.style.display = "block";
             isPaused = true;
             sellingPoint = { x: currentX };
@@ -447,7 +445,7 @@
                 const currentPrice = prices[Math.floor(currentX)];
                 money += (fishToSell * currentPrice);
                 fishQuantity -= fishToSell;
-                totalFishSold += fishToSell; // 
+                totalFishSold += fishToSell; 
 
 
                 
@@ -462,16 +460,16 @@
             register.play();
 
 
-            updateMoneyDisplay(); // Update money display
-            updateQuantityDisplay(); // Update fish quantity display
+            updateMoneyDisplay(); 
+            updateQuantityDisplay(); 
             updateMultiplier();
 
-            sellFishPopup.style.display = "none"; // Hide the popup
+            sellFishPopup.style.display = "none"; 
             
             isPaused = false;
             if (money < 0) {
                 isPaused = true;
-            } // Resume the graph
+            } 
         });
 
         document.getElementById("close-over-capacity").addEventListener("click", () => {
@@ -505,20 +503,20 @@
 
         let fishGainInterval = setInterval(() => {
             if (!isPaused && fishQuantity < capacity) {
-                fishQuantity += 1 + employees; // Gain 1 fish + employees fish every second
+                fishQuantity += 1 + employees;
                 updateQuantityDisplay();
             }
         }, (1000 / oceanLevel));
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Digit8') {  // Checks if the '8' key is pressed
+            if (e.code === 'Digit8') { 
                 money = 99999;
                 updateMoneyDisplay();
             }
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Digit9') {  // Checks if the '8' key is pressed
+            if (e.code === 'Digit9') { 
                 fishQuantity = 99999;
 
                 updateQuantityDisplay();
