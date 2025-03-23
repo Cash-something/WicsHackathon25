@@ -72,12 +72,15 @@ function showBottleAtRandom() {
     bottleButton.style.transition = `left ${animationDuration}ms linear`;
     bottleButton.style.left = "-10%";
 
-    setTimeout(() => {
-            bottleButton.style.display = "none";
-            if (isBottleAnimationRunning) {
-                scheduleNextBottle();
-            }
-    }, animationDuration);
+    const onTransitionEnd = () => {
+        bottleButton.style.display = "none";
+        if (isBottleAnimationRunning) {
+            scheduleNextBottle(); // Schedule the next appearance
+        }
+        bottleButton.removeEventListener("transitionend", onTransitionEnd); // Clean up the event listener
+    };
+
+    bottleButton.addEventListener("transitionend", onTransitionEnd);
 }
 
 function scheduleNextBottle() {
@@ -122,12 +125,7 @@ setTimeout(() => {
     showBottleAtRandom();
 }, 4000);
 
-function stopBottleAnimation(){
-    isBottleAnimationRunning = false;
-    clearTimeout(bottleTimeoutId);
-    bottleButton.style.transition = "none";
-    bottleButton.style.display = "none";
-}
+
 
 isBottleAnimationRunning = true;
 setTimeout(() => {
@@ -135,7 +133,12 @@ setTimeout(() => {
 
 }, 4000);
 
-
+function stopBottleAnimation(){
+    isBottleAnimationRunning = false;
+    clearTimeout(bottleTimeoutId);
+    bottleButton.style.transition = "none";
+    bottleButton.style.display = "none";
+}
 
 document.head.insertAdjacentHTML("beforeend", `
     <style>
