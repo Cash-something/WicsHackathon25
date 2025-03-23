@@ -40,6 +40,25 @@ const medMessages = [
 
 ];
 
+let priceAdjustment = 1;
+
+function getMessageAdjustment(messages) {
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const selectedMessage = messages[randomIndex];
+
+    if(randomIndex <= 2) {
+        priceAdjustment += 0.2;
+    }
+    else {
+        priceAdjustment -= 0.2;
+    }
+
+    priceAdjustment = Math.max(0.5, Math.min(2.0, priceAdjustment));
+
+    return selectedMessage;
+}
+
+
 function showRandomMessage() {
     const randomIndex = Math.floor(Math.random() * gulfMessages.length);
     alert(gulfMessages[randomIndex]);
