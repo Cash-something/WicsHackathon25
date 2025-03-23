@@ -15,7 +15,9 @@
 
         <img id="background" src="Gulf.png" alt="Background Image" >
         <span id="quantityText">Quantity: 0</span>
-        <button id="incrementButton" style="background-image: url(Rowboat.png);">
+        <button id="bottleButton"></button>
+        <div id="price-multiplier">Price Multiplier: 100%</div>
+        <button id="incrementButton" style="background-image: url(Rowboat.png); width: 300px; height: 200px;">
             <div id="people">
                 <img id="captain" src="Captain.png" alt="Captain Image" style="top: -50px";> 
                 <img id="tyler" src="Tyler.png" alt="Tyler Image" style="top: -50px; opacity: 0;" > 
@@ -57,11 +59,6 @@
             <button id="sell-button">Complete</button>
         </div>
 
-
-        <button id="decrement-money-button"
-            style="position: absolute; top: 130px; left: 10px; font-size: 20px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px;">
-            Lose $20
-        </button>
 
         <div id="over-capacity">
             <p>You don't have that many fish!</p>
@@ -200,12 +197,7 @@
             gameOverPopup.style.display = "block"; // Show the popup
         }
 
-        // Add event listener for the new decrement money button
-        const decrementMoneyButton = document.getElementById("decrement-money-button");
-        decrementMoneyButton.addEventListener("click", () => {
-            money -= 20; // Decrement money by 20
-            updateMoneyDisplay(); // Update the money display and check if the ship sinks
-        });
+
 
         const restartButton = document.getElementById("restart-button");
         restartButton.addEventListener("click", () => {
@@ -225,8 +217,10 @@
             if(employees == 1) {
                 document.getElementById("tyler").style.opacity = "1";
             }
-            if(boatlvl == 1) {
+            if(boatlvl == 2) {
                 document.getElementById("incrementButton").style.backgroundImage = "url(Sailboat.png)"; 
+                document.getElementById("incrementButton").style.width = "400px";
+                document.getElementById("incrementButton").style.height = "300px";
                 document.getElementById("captain").style.top = "-20px";
                 document.getElementById("tyler").style.top = "-20px";
             }

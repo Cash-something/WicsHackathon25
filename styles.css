@@ -76,6 +76,14 @@ body {
     background-size: contain;
     background-position: center;
 }
+
+#price-multiplier {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+}
 #fish-price {
     position: absolute;
     top: 40px;
@@ -325,8 +333,7 @@ body {
     bottom: 30%;
     left:50%;
     transform: translateX(-50%);
-    width: 300px;
-    height: 200px;
+
     background: transparent;   
     background-repeat: no-repeat;
     background-size: contain;
