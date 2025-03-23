@@ -9,7 +9,7 @@ const gulfMessages = [
     //Low Prices 0-2
     "U.S. Fish Market: Plentiful Supply, Low Prices.",
     "Gulf Overfishing Floods Markets: Seafood Prices Plunge To Record Lows.",
-    "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Fishing Overfishing.",
+    "Oceans Overflow, Wallets Rejoice: Seafood Prices Dip Amid Gulf Overfishing.",
 
     //High Prices 3-5
     "Louisiana's Seafood Industry Under Duress After Four Hurricanes In Two Years",
@@ -73,36 +73,33 @@ function showBottleAtRandom() {
 
 function scheduleNextBottle() {
     if (!isBottleAnimationRunning) return;
-    const nextAppearance = Math.random() * 5000 + 2000;
+    const nextAppearance = Math.random() * 10000 + 2000;
     bottleTimeoutId = setTimeout(showBottleAtRandom, nextAppearance);
+}
+
+function getMessageAdjustment(messages) {
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const selectedMessage = messages[randomIndex];
+
+    if(randomIndex <= 2) {
+        priceAdjustment -= 0.2;
+    }
+    else {
+        priceAdjustment += 0.2;
+    }
+
+    priceAdjustment = Math.max(0.5, Math.min(2.0, priceAdjustment));
+
+    return selectedMessage;
 }
 
 bottleButton.addEventListener("click", () => {
     let message;
-
-    let selectedMessages;
-    switch (oceanLevel) {
-        case 0:
-            selectedMessages = gulfMessages;
-            break;
-
-        case 1:
-            selectedMessages = medMessages;
-            break;
-
-        case 2:
-            selectedMessages = arcticMessages;
-            break;
-
-            default:
-                selectedMessages = gulfMessages;
-    }
-
     if (isFirstClick) {
         message = initialMessage;
         isFirstClick = false;
     } else {
-        message = selectedMessages[Math.floor(Math.random() * selectedMessages.length)];
+        message = getMessageAdjustment(gulfMessages);
     }
 
     alert(message);
@@ -116,7 +113,7 @@ bottleButton.addEventListener("click", () => {
 
 setTimeout(() => {
     showBottleAtRandom();
-}, 2000);
+}, 4000);
 
 function stopBottleAnimation(){
     isBottleAnimationRunning = false;
@@ -128,4 +125,5 @@ function stopBottleAnimation(){
 isBottleAnimationRunning = true;
 setTimeout(() => {
     showBottleAtRandom();
-}, 2000);
+}, 4000);
+
