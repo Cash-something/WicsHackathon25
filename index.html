@@ -164,6 +164,11 @@
             z-index: 1;
             animation: sway 2s infinite ease-in-out;
         }
+        #fees {
+            margin-top: 10px;
+            font-size: 16px;
+            color: lightgray;
+        }
         
         @keyframes sway {
             0%, 100% {
@@ -200,7 +205,8 @@
         <!-- Sell Fish Popup -->
         <div id="sell-fish-popup">
             <p>How many fish would you like to sell?</p>
-            <input type="number" id="fish-to-sell" min="0" value="0">    
+            <input type="number" id="fish-to-sell" min="0" value="0">
+            <p>Boat Fee: $<span id="boat-fee">0</span> | Employee Fee: $<span id="employee-fee">0</span></p>    
             <button id="sell-button">Complete</button>
         </div>
 
@@ -214,9 +220,9 @@
         canvas.height = canvas.offsetHeight;
 
         // Game state
-        let money = 1000;
+        let money = 10000;
         let employees = 0;
-        let boatlvl = 0;
+        let boatlvl = 1;
         const upgradeButton = document.getElementById("upgrade-button");
         const employeesPopup = document.getElementById("employees-popup");
         const hireButton = document.getElementById("hire-button");
@@ -233,6 +239,8 @@
         // DOM elements
         const fishPriceElement = document.getElementById("fish-price");
         const moneyElement = document.getElementById("money");
+        const bfeesElement = document.getElementById("bfees");
+        const efeesElement = document.getElementById("efees");
         const quantityText = document.getElementById("quantityText");
         const sellFishPopup = document.getElementById("sell-fish-popup");
         const fishToSellInput = document.getElementById("fish-to-sell");
@@ -256,6 +264,8 @@
             employeeCount.textContent = employees;
             boatLevel.textContent = boatlvl;
         }
+
+
 
         // Draw the stock graph
         function drawGraph() {
@@ -297,8 +307,7 @@
 
             // Check if currentX reaches 25% or 75% of the array size
             if (currentX === 25 || currentX === 75) {
-                isPaused = true;
-                sellFishPopup.style.display = "block"; // Show the sell fish popup
+                openSellPopup();
             }
 
             drawGraph();
@@ -338,18 +347,38 @@
             updateMoneyDisplay();
             updateUDisplays();
         });
+        function updateFeesDisplay() {
+            let boatFee = boatlvl * 100;
+            let employeeFee = employees * 30;
+            document.getElementById("boat-fee").textContent = boatFee;
+            document.getElementById("employee-fee").textContent = employeeFee;
+        }
 
+        function openSellPopup() {
+            updateFeesDisplay();
+            sellFishPopup.style.display = "block";
+            isPaused = true;
+        }
         // Sell fish logic
         sellButton.addEventListener("click", () => {
             const fishToSell = parseInt(fishToSellInput.value);
+            let boatFee = boatlvl * 100;
+            let employeeFee = employees * 30;
             if (fishToSell > 0 && fishToSell <= fishQuantity) {
                 const currentPrice = prices[Math.floor(currentX)];
                 money += (fishToSell * currentPrice);
+
                 fishQuantity -= fishToSell;
-                updateMoneyDisplay();
-                updateQuantityDisplay();
+                
             }
             
+                money -= boatFee;
+                money -= employeeFee;
+                
+            
+            
+            updateMoneyDisplay();
+                updateQuantityDisplay();
             sellFishPopup.style.display = "none"; // Hide the popup
             isPaused = false; // Resume the graph
         });
@@ -376,6 +405,8 @@
         drawGraph();
         drawCurrentPriceLine();
         setInterval(updateGraph, 400);
+
+
     </script>
 </body>
 </html>
